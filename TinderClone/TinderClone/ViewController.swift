@@ -11,10 +11,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let grayView = UIView()
-        grayView.backgroundColor = .gray
-        
+     
+
         // this map function, iterates through all of the colors and returns  and array
         let subviews = [UIColor.gray, UIColor.darkGray, UIColor.black].map { color -> UIView in
             let v = UIView()
@@ -30,23 +28,21 @@ class ViewController: UIViewController {
         
         let blueView = UIView()
         blueView.backgroundColor = .blue
-        let yellowView = UIView()
-        yellowView.backgroundColor = .yellow
-        yellowView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+    
+        
+        let buttonStackView = HomeBottomControlsStackView()
         
         
         
-        
-        let stackView  = UIStackView(arrangedSubviews: [topStackView, blueView,yellowView])
-//        stackView.distribution = .fillEqually
-        stackView.axis = .vertical // makes it spand in the vertical axis
+        let overallStackView  = UIStackView(arrangedSubviews: [topStackView, blueView,buttonStackView])
+        overallStackView.axis = .vertical // makes it spand in the vertical axis
         
         
         
-        view.addSubview(stackView)
-        stackView.frame = .init(x: 0, y: 0, width: 300, height: 300)
+        view.addSubview(overallStackView)
+
         
-        stackView.fillSuperview()
+        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
         
 
         
