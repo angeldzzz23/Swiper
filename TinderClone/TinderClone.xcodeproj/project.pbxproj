@@ -19,6 +19,7 @@
 		1CD40DD32771938B0059FB73 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD40DD22771938B0059FB73 /* CardView.swift */; };
 		1CD40DD62771B37C0059FB73 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD40DD52771B37C0059FB73 /* User.swift */; };
 		1CD40DDA2771CBC50059FB73 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD40DD92771CBC50059FB73 /* CardViewModel.swift */; };
+		1CD40DDC2771D7ED0059FB73 /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD40DDB2771D7ED0059FB73 /* Advertiser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		1CD40DD22771938B0059FB73 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		1CD40DD52771B37C0059FB73 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		1CD40DD92771CBC50059FB73 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
+		1CD40DDB2771D7ED0059FB73 /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				1CD40DD52771B37C0059FB73 /* User.swift */,
+				1CD40DDB2771D7ED0059FB73 /* Advertiser.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CD40DDC2771D7ED0059FB73 /* Advertiser.swift in Sources */,
 				1CD40DD32771938B0059FB73 /* CardView.swift in Sources */,
 				1CAD86F127707330001B53EB /* HomeController.swift in Sources */,
 				1CAD86ED27707330001B53EB /* AppDelegate.swift in Sources */,

@@ -15,12 +15,22 @@ class HomeController: UIViewController {
     let buttonStackView = HomeBottomControlsStackView()
     
 
-    
-    let cardViewModels = [
-        User(name: "Angel", age: 22, proffession: "Coffee Drinker", imageName: "lady5c").toCardViewModel(),
-        User(name: "Jane", age: 18, proffession: "Teacher", imageName: "lady4c").toCardViewModel()
-    ]
-    
+    // closure that maps every produces to call cardViewModel methodb
+    let cardViewModels: [CardViewModel] = {
+        let producers =
+            [
+                User(name: "Angel", age: 22, proffession: "Coffee Drinker", imageName: "lady5c"),
+                User(name: "Jane", age: 18, proffession: "Teacher", imageName: "lady4c"),
+                Advertiser(title: "MCDIES", brandName: "I am hungry, food!!! food!!", posterPhotoName: "mcdonalds_print_aotw")
+            ] as [ProducesCardViewModel]
+        
+        let viewModels = producers.map({return $0.toCardViewModel()})
+        
+        return viewModels
+        
+        
+    }()
+        
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,13 +39,12 @@ class HomeController: UIViewController {
         
     }
     
+    
     fileprivate func setupDummyCards()  {
         
         cardViewModels.forEach { cardVM in
             let cardView = CardView(frame: .zero) // this is just a rect with 0, 0, doesnt matter since we are using autolayout
-            cardView.imageView.image = UIImage(named: cardVM.imageName)
-            cardView.InformationLabel.attributedText = cardVM.attributedString
-            cardView.InformationLabel.textAlignment = cardVM.textAlignment
+            cardView.cardViewModel = cardVM
             cardDeckView.addSubview(cardView)
             cardView.fillSuperview()
             
