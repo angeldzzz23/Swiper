@@ -68,10 +68,6 @@ class CardView: UIView {
         let translation = gesture.translation(in: nil)
         let shouldDismissCard = translation.x > treshhold || translation.x < -treshhold
     
-        
-        
-        
-        
         UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
             
             if shouldDismissCard {
