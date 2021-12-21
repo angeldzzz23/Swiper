@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     
    
     override func viewDidLoad() {
-        super.viewDidLoad()        
+        super.viewDidLoad()
         setupLayout()
         setupDummyCards()
         
@@ -31,13 +31,18 @@ class ViewController: UIViewController {
     
     // MARK: setting up the layout
     fileprivate func setupLayout() {
+        
         let overallStackView  = UIStackView(arrangedSubviews: [topStackView, cardDeckView,buttonStackView])
+        
         overallStackView.axis = .vertical // makes it spand in the vertical axis
         view.addSubview(overallStackView)
         overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
         // adding margins to the left and right side of the stack view
         overallStackView.isLayoutMarginsRelativeArrangement = true
         overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
+        
+        // changing the z index for cardDeckView 
+        overallStackView.bringSubviewToFront(cardDeckView)
     }
 
 

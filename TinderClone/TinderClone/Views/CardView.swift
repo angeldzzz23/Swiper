@@ -10,6 +10,10 @@ import UIKit
 class CardView: UIView {
     
     fileprivate let imageView = UIImageView(image: UIImage(named: "lady5c"))
+
+    // configurations
+    fileprivate let treshhold: CGFloat = 100
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,7 +39,7 @@ class CardView: UIView {
         case .changed:
             handleChanged(gesture)
         case .ended:
-            handleEnded()
+            handleEnded(gesture)
 
         default:
             ()
@@ -46,16 +50,51 @@ class CardView: UIView {
     
     fileprivate func handleChanged(_ gesture: UIPanGestureRecognizer) {
         let translation = gesture.translation(in: nil)
-        self.transform = CGAffineTransform(translationX: translation.x, y: translation.y)
+        
+        // rotation
+        // converting radians to degrees
+        let degrees: CGFloat = translation.x / 20 // the division of 20 slows the effect down
+        let angle = degrees * .pi / 180
+        
+        let rotationalTransformation = CGAffineTransform(rotationAngle: angle)
+        
+        self.transform = rotationalTransformation.translatedBy(x: translation.x, y: translation.y) // setting the card to rotate and panning
+        
+//        self.transform = CGAffineTransform(translationX: translation.x, y: translation.y)
     }
     
     
-    fileprivate func handleEnded() {
-            
+    fileprivate func handleEnded(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: nil)
+        let shouldDismissCard = translation.x > treshhold || translation.x < -treshhold
+    
+        
+        
+        
+        
         UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
-            self.transform = .identity // brings it back to the origin
-        } completion: { _ in
             
+            if shouldDismissCard {
+                
+                if (translation.x > self.treshhold) {
+                    let offScreenTransform = self.transform.translatedBy(x: 1000, y: 0)
+                    self.transform = offScreenTransform
+                } else if (translation.x < -self.treshhold) {
+                    let offScreenTransform = self.transform.translatedBy(x: -1000, y: 0)
+                    self.transform = offScreenTransform
+                }
+                
+                
+                
+            } else {
+                self.transform = .identity
+            }
+            
+           
+        } completion: { _ in
+            self.transform = .identity // brings it back to the origin
+            self.frame = CGRect(x: 0, y: 0, width: self.superview!.frame.width, height: self.superview!.frame.height)
+
         }
     }
     
