@@ -13,12 +13,12 @@ class HomeController: UIViewController {
     let topStackView = TopNavigationStackView()
     let cardDeckView = UIView()
     let buttonStackView = HomeBottomControlsStackView()
-
-    let users = [
-    User(name: "Angel", age: 22, proffession: "Coffee Drinker", imageName: "lady5c"),
-    User(name: "Jane", age: 18, proffession: "Teacher", imageName: "lady4c")
+    
 
     
+    let cardViewModels = [
+        User(name: "Angel", age: 22, proffession: "Coffee Drinker", imageName: "lady5c").toCardViewModel(),
+        User(name: "Jane", age: 18, proffession: "Teacher", imageName: "lady4c").toCardViewModel()
     ]
     
    
@@ -31,32 +31,17 @@ class HomeController: UIViewController {
     
     fileprivate func setupDummyCards()  {
         
-        users.forEach { user in
-            let cardView = CardView(frame: .zero)
-        
-            cardView.InformationLabel.text = "\(user.name) \(user.age)\n\(user.proffession)"
-            cardView.imageView.image = UIImage(named: user.imageName)
-            
-            // addiding attributed text
-            let attributedText = NSMutableAttributedString(string: user.name, attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
-            
-            attributedText.append(NSAttributedString(string: "  \(user.age)", attributes: [.font : UIFont.systemFont(ofSize: 24, weight: .regular)]))
-            
-            attributedText.append(NSAttributedString(string: "\n\(user.proffession)", attributes: [.font : UIFont.systemFont(ofSize: 20, weight: .regular)]))
-
-            
-            cardView.InformationLabel.attributedText = attributedText
-            
+        cardViewModels.forEach { cardVM in
+            let cardView = CardView(frame: .zero) // this is just a rect with 0, 0, doesnt matter since we are using autolayout
+            cardView.imageView.image = UIImage(named: cardVM.imageName)
+            cardView.InformationLabel.attributedText = cardVM.attributedString
+            cardView.InformationLabel.textAlignment = cardVM.textAlignment
             cardDeckView.addSubview(cardView)
             cardView.fillSuperview()
+            
         }
         
         
-//        (0..<10).forEach { (_) in
-//            let cardView = CardView(frame: .zero)
-//            cardDeckView.addSubview(cardView)
-//            cardView.fillSuperview()
-//        }
         
         
     
