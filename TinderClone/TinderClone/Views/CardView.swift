@@ -11,9 +11,19 @@ class CardView: UIView {
 
     var cardViewModel: CardViewModel! {
         didSet {
-            imageView.image = UIImage(named: cardViewModel.imageName)
+            
+            let imageName = cardViewModel.imageNames.first ?? ""
+            imageView.image = UIImage(named: imageName)
             InformationLabel.attributedText = cardViewModel.attributedString
             InformationLabel.textAlignment = cardViewModel.textAlignment
+            
+            
+            (0..<cardViewModel.imageNames.count).forEach { (_) in
+                let barView = UIView()
+                barView.backgroundColor = UIColor(white: 0, alpha: 0.1)
+                barsStackView.addArrangedSubview(barView)
+            }
+            
         }
     }
     
@@ -41,9 +51,14 @@ class CardView: UIView {
         layer.cornerRadius = 10
         clipsToBounds = true
         
+        
+        
+        
         imageView.contentMode = .scaleAspectFill
         addSubview(imageView)
         imageView.fillSuperview()  // adds contraint to the superview
+        
+        setUpBarsStackView()
         
         // add a gradient layer
         setUpGradientLayer()
@@ -56,6 +71,24 @@ class CardView: UIView {
         InformationLabel.textColor = .white
         
         InformationLabel.numberOfLines = 0
+    }
+    
+    /// the top stack view that contains the bars
+    fileprivate let barsStackView = UIStackView()
+    
+    fileprivate func setUpBarsStackView() {
+        addSubview(barsStackView)
+        
+        barsStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
+        
+        
+        barsStackView.spacing = 4
+        barsStackView.distribution = .fillEqually
+        
+    
+        barsStackView.arrangedSubviews.first?.backgroundColor = .white
+        
+     
     }
     
  
