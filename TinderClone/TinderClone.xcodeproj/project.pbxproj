@@ -16,6 +16,7 @@
 		1CAD87022770801E001B53EB /* Extensions+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAD87012770801E001B53EB /* Extensions+UIView.swift */; };
 		1CAD870527708CEE001B53EB /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAD870427708CEE001B53EB /* HomeBottomControlsStackView.swift */; };
 		1CAD8707277092EB001B53EB /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAD8706277092EB001B53EB /* TopNavigationStackView.swift */; };
+		1CD40DD32771938B0059FB73 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD40DD22771938B0059FB73 /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		1CAD87012770801E001B53EB /* Extensions+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+UIView.swift"; sourceTree = "<group>"; };
 		1CAD870427708CEE001B53EB /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
 		1CAD8706277092EB001B53EB /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
+		1CD40DD22771938B0059FB73 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 			children = (
 				1CAD870427708CEE001B53EB /* HomeBottomControlsStackView.swift */,
 				1CAD8706277092EB001B53EB /* TopNavigationStackView.swift */,
+				1CD40DD22771938B0059FB73 /* CardView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CD40DD32771938B0059FB73 /* CardView.swift in Sources */,
 				1CAD86F127707330001B53EB /* ViewController.swift in Sources */,
 				1CAD86ED27707330001B53EB /* AppDelegate.swift in Sources */,
 				1CAD870527708CEE001B53EB /* HomeBottomControlsStackView.swift in Sources */,
