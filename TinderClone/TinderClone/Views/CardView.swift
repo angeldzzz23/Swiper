@@ -17,12 +17,14 @@ class CardView: UIView {
             InformationLabel.attributedText = cardViewModel.attributedString
             InformationLabel.textAlignment = cardViewModel.textAlignment
             
-            
+            // setting the barstackview to be the approapritate color
             (0..<cardViewModel.imageNames.count).forEach { (_) in
                 let barView = UIView()
-                barView.backgroundColor = UIColor(white: 0, alpha: 0.1)
+                barView.backgroundColor = barDeselectedColor
                 barsStackView.addArrangedSubview(barView)
             }
+            barsStackView.arrangedSubviews.first?.backgroundColor = .white
+            
             
         }
     }
@@ -41,8 +43,40 @@ class CardView: UIView {
         super.init(frame: frame)
         setUpLayout()
         
+        // adding pan gesture
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         addGestureRecognizer(panGesture)
+        // adding tap gesture
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+        
+    }
+    
+    var imageIndex = 0
+    fileprivate let barDeselectedColor = UIColor(white: 0, alpha: 0.1)
+    /// handles the tap gesture
+    @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
+        
+        let tapLocation = gesture.location(in: nil) // the location of the gesture
+        let shouldAdvc = tapLocation.x > frame.width / 2 ? true : false  // check if you can advance to nextphoto
+        
+       // transversing through the images
+        if shouldAdvc {
+                            
+            imageIndex = min(imageIndex + 1, cardViewModel.imageNames.count - 1)
+        } else {
+            imageIndex = max(0,imageIndex - 1)
+        }
+        
+        let imageName = cardViewModel.imageNames[imageIndex]
+        imageView.image = UIImage(named: imageName)
+        
+        // deselecting all of the bars so that they become gray
+        barsStackView.arrangedSubviews.forEach { v in
+            v.backgroundColor = barDeselectedColor
+        }
+        // changing the color of the current image
+        barsStackView.arrangedSubviews[imageIndex].backgroundColor = .white
+        
         
     }
     
