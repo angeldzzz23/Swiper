@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1CAD86ED27707330001B53EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAD86EC27707330001B53EB /* AppDelegate.swift */; };
 		1CAD86EF27707330001B53EB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAD86EE27707330001B53EB /* SceneDelegate.swift */; };
-		1CAD86F127707330001B53EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAD86F027707330001B53EB /* ViewController.swift */; };
+		1CAD86F127707330001B53EB /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAD86F027707330001B53EB /* HomeController.swift */; };
 		1CAD86F427707330001B53EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CAD86F227707330001B53EB /* Main.storyboard */; };
 		1CAD86F627707331001B53EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CAD86F527707331001B53EB /* Assets.xcassets */; };
 		1CAD86F927707331001B53EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CAD86F727707331001B53EB /* LaunchScreen.storyboard */; };
@@ -17,13 +17,14 @@
 		1CAD870527708CEE001B53EB /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAD870427708CEE001B53EB /* HomeBottomControlsStackView.swift */; };
 		1CAD8707277092EB001B53EB /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAD8706277092EB001B53EB /* TopNavigationStackView.swift */; };
 		1CD40DD32771938B0059FB73 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD40DD22771938B0059FB73 /* CardView.swift */; };
+		1CD40DD62771B37C0059FB73 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD40DD52771B37C0059FB73 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1CAD86E927707330001B53EB /* TinderClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CAD86EC27707330001B53EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1CAD86EE27707330001B53EB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		1CAD86F027707330001B53EB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1CAD86F027707330001B53EB /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		1CAD86F327707330001B53EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1CAD86F527707331001B53EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CAD86F827707331001B53EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -32,6 +33,7 @@
 		1CAD870427708CEE001B53EB /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
 		1CAD8706277092EB001B53EB /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		1CD40DD22771938B0059FB73 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		1CD40DD52771B37C0059FB73 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,9 +68,10 @@
 			children = (
 				1CAD86EC27707330001B53EB /* AppDelegate.swift */,
 				1CAD870327708CBE001B53EB /* Views */,
+				1CD40DD42771B36D0059FB73 /* Model */,
 				1CAD870027707FD0001B53EB /* Extensions */,
 				1CAD86EE27707330001B53EB /* SceneDelegate.swift */,
-				1CAD86F027707330001B53EB /* ViewController.swift */,
+				1CAD86F027707330001B53EB /* HomeController.swift */,
 				1CAD86F227707330001B53EB /* Main.storyboard */,
 				1CAD86F527707331001B53EB /* Assets.xcassets */,
 				1CAD86F727707331001B53EB /* LaunchScreen.storyboard */,
@@ -93,6 +96,14 @@
 				1CD40DD22771938B0059FB73 /* CardView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		1CD40DD42771B36D0059FB73 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1CD40DD52771B37C0059FB73 /* User.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,9 +178,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CD40DD32771938B0059FB73 /* CardView.swift in Sources */,
-				1CAD86F127707330001B53EB /* ViewController.swift in Sources */,
+				1CAD86F127707330001B53EB /* HomeController.swift in Sources */,
 				1CAD86ED27707330001B53EB /* AppDelegate.swift in Sources */,
 				1CAD870527708CEE001B53EB /* HomeBottomControlsStackView.swift in Sources */,
+				1CD40DD62771B37C0059FB73 /* User.swift in Sources */,
 				1CAD8707277092EB001B53EB /* TopNavigationStackView.swift in Sources */,
 				1CAD87022770801E001B53EB /* Extensions+UIView.swift in Sources */,
 				1CAD86EF27707330001B53EB /* SceneDelegate.swift in Sources */,
