@@ -28,7 +28,7 @@ class CardView: UIView {
             setupImageInndexObserver()
         }
     }
-    
+     
     fileprivate func setupImageInndexObserver() {
         cardViewModel.imageIndexObserver = {[weak self] (idx,image) in
             print("changing photo from view model")
@@ -158,7 +158,7 @@ class CardView: UIView {
         case .ended:
             handleEnded(gesture)
         default:
-            ()
+            () // leaving it empty 
         }
         
     }

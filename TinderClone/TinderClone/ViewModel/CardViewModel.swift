@@ -14,7 +14,6 @@ protocol ProducesCardViewModel {
     func toCardViewModel() -> CardViewModel
 }
 
-
 // deals with the UI for the application
 // represents the the state of view
 class CardViewModel {
