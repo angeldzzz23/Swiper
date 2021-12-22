@@ -22,6 +22,17 @@ class RegistrationController: UIViewController {
         return button
     }()
     
+    let RegisterButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Register", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+        button.setTitleColor(.white, for: .normal)
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.layer.cornerRadius = 25
+        button.backgroundColor =  #colorLiteral(red: 0.8074133396, green: 0.1035810784, blue: 0.3270690441, alpha: 1)
+        return button
+    }()
+    
     let fullNameTextField: UITextField = {
        let tf = CustomTextfield(padding: 16)
         tf.placeholder = "enter full name"
@@ -56,7 +67,7 @@ class RegistrationController: UIViewController {
         view.backgroundColor = .red
         
         let stackView = UIStackView(arrangedSubviews: [
-            selectPhotoButton, fullNameTextField, emailTextField, passwordTextField
+            selectPhotoButton, fullNameTextField, emailTextField, passwordTextField, RegisterButton
         ])
         
         stackView.axis = . vertical
