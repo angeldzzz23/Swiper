@@ -93,11 +93,26 @@ class RegistrationViewModel {
                 self.bindableIsResgistering.value = false
                 print("download url of our image:", url?.absoluteString ?? "")
                 // store the download url into firesotr next lesson
+                let imgUrl = url?.absoluteString ?? ""
+                self.saveInfoToFirestore(imageUrl: imgUrl, completion: completion)
                 completion(nil)
             })
         })
     }
     
+    
+    fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) ->()) {
+        let uid = Auth.auth().currentUser?.uid ?? ""
+        let docData = ["fullname": fullName ?? "", "uid": uid, "imageUrl1": imageUrl]
+        Firestore.firestore().collection("users").document(uid).setData(docData) { err in
+            if let error = err {
+                completion(error)
+                return
+            }
+            
+            completion(nil) // everuthing finished correctly
+        }
+    }
     // Reactive Programming
     // this is called whenever we modify the state of our form
 
