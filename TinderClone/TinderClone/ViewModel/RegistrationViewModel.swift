@@ -42,14 +42,15 @@ class RegistrationViewModel {
         bindableIsFormValid.value = isFormValid
     }
     
-    
+    // when we call this
     func performRegistration(completion: @escaping (Error?) -> ()) {
         
         guard let email = email, let pass = password else {return}
         bindableIsResgistering.value = true
+        
         // adding user to firebase
-        Auth.auth().createUser(withEmail: email, password: pass) { res, err in
-            if let err = err {
+        Auth.auth().createUser(withEmail: email, password: pass) { res, err in // create user
+            if let err = err { // check for error
 //                print(err)
                 completion(err)
 //                self.showHUDWithError(error: err)
@@ -57,37 +58,44 @@ class RegistrationViewModel {
             }
             
             print("user was registered", res?.user.uid ?? "")
-            // only upload images to firebase storage once you are authorized
             
-            let fileName = UUID().uuidString
-            let ref = Storage.storage().reference(withPath: "/images/\(fileName)")
-            let imageData = self.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
-            
-            ref.putData(imageData, metadata: nil, completion: {(_, err) in
-                
-                if let err = err {
-                    completion(err)
-//                    self.showHUDWithError(error: err)
-                    return
-                }
-                print("finished uploading image to storage ")
-                
-                // checks the download url
-                // retrieving the url
-                ref.downloadURL(completion: {(url, err) in
-                    if let err = err {
-                        completion(err)
-//                        self.showHUDWithError(error: err)
-                        return
-                    }
-                    
-                    self.bindableIsResgistering.value = false
-                    print("download url of our image:", url?.absoluteString ?? "")
-                    // store the download url into firesotr next lesson
-                })
-            })
+            // save image to firebase
+            self.saveImageToFirebase(completion: completion)
             
         }
+    }
+    
+    //
+    fileprivate func saveImageToFirebase(completion: @escaping (Error?) -> ()) {
+        // only upload images to firebase storage once you are authorized
+        let fileName = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/images/\(fileName)")
+        let imageData = self.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
+        
+        ref.putData(imageData, metadata: nil, completion: {(_, err) in
+            
+            if let err = err {
+                completion(err)
+//                    self.showHUDWithError(error: err)
+                return
+            }
+            print("finished uploading image to storage ")
+            
+            // checks the download url
+            // retrieving the url
+            ref.downloadURL(completion: {(url, err) in
+                if let err = err {
+                    completion(err)
+//                        self.showHUDWithError(error: err)
+                    return
+                }
+                
+                self.bindableIsResgistering.value = false
+                print("download url of our image:", url?.absoluteString ?? "")
+                // store the download url into firesotr next lesson
+                completion(nil)
+            })
+        })
     }
     
     // Reactive Programming
