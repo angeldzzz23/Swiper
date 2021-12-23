@@ -58,8 +58,6 @@ class RegistrationController: UIViewController {
     }()
     
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -115,7 +113,7 @@ class RegistrationController: UIViewController {
         
         // how tall the gap is from the register button to the bottom of the screen
         // the height of the view
-        let bottomSpace = view.frame.height - stackView.frame.origin.y - stackView.frame.height
+        let bottomSpace = view.frame.height - pverallStackView.frame.origin.y - pverallStackView.frame.height
         
         let difference = keyboardFrame.height - bottomSpace
         self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8) // adds some padding to this
@@ -124,10 +122,19 @@ class RegistrationController: UIViewController {
         
     }
     
+    let gradientLayer = CAGradientLayer()
+    
+    
+    // redraws elements in the view controller
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        gradientLayer.frame = view.bounds
+    }
+    
     // MARK: Helper functions
     // adding gradient
     fileprivate func  setupGradientLayer() {
-        let gradientLayer = CAGradientLayer()
         let topColor = #colorLiteral(red: 0.9826737046, green: 0.3377019167, blue: 0.3818222284, alpha: 1)
         let bottomColor = #colorLiteral(red: 0.8882574439, green: 0.1114654019, blue: 0.4571794271, alpha: 1)
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
@@ -137,24 +144,49 @@ class RegistrationController: UIViewController {
         gradientLayer.frame = view.bounds
     }
     
-    // variable is created after the selectPhotoButton and other variables are compiled
-    lazy var stackView = UIStackView(arrangedSubviews: [
-        selectPhotoButton,
-        fullNameTextField,
-        emailTextField,
-        passwordTextField,
-        RegisterButton
-        ])
+    lazy var verticalStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [ fullNameTextField,
+                                                 emailTextField,
+                                                 passwordTextField,
+                                                 RegisterButton])
+          
+        sv.axis = .vertical
+        sv.distribution = .fillEqually
+        sv.spacing = 8
+        return sv
+    }()
     
+    
+    
+    // variable is created after the selectPhotoButton and other variables are compiled
+    lazy var pverallStackView = UIStackView(arrangedSubviews: [
+        selectPhotoButton,
+        verticalStackView
+    ])
+        
+    // checks if if the trait collection changed
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if self.traitCollection.verticalSizeClass == .compact {
+            pverallStackView.axis = .horizontal
+        } else {
+            pverallStackView.axis = .vertical
+            
+        }
+    }
+                                            
+                                            
     fileprivate func setupLayout() {
         // Do any additional setup after loading the view.
         
-      
+        view.addSubview(pverallStackView)
+    
         
-        stackView.axis = . vertical
-        stackView.spacing = 8
-        view.addSubview(stackView)
-        stackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
-        stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    
+        pverallStackView.axis = .vertical
+        pverallStackView.spacing = 8
+        selectPhotoButton.widthAnchor.constraint(equalToConstant: 275).isActive = true
+     
+        pverallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
+        pverallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
 }
