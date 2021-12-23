@@ -42,7 +42,6 @@ class RegistrationController: UIViewController {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         present(imagePickerController, animated: true)
-        
     }
     
     let RegisterButton: UIButton = {
@@ -70,29 +69,31 @@ class RegistrationController: UIViewController {
         return button
     }()
     
+    let registeringHUD = JGProgressHUD(style: .dark)
+    // 4373
     @objc fileprivate func handleTapButton() {
         // dismisses the keyboard
         self.handleTapDismiss()
         
-        // make sure that the textfields are not empty
-        guard let email = emailTextField.text else {return}
+        registrationViewModel.bindableIsResgistering.value = true
         
-        guard let pass = passwordTextField.text else {return}
-        
-        
-        // adding user to firebase
-        Auth.auth().createUser(withEmail: email, password: pass) { res, err in
+        registrationViewModel.performRegistration { [weak self]err in
             if let err = err {
-                print(err)
-                self.showHUDWithError(error: err)
+                self?.showHUDWithError(error: err)
                 return
             }
-            
-            print("user was registered", res?.user.uid ?? "")
         }
+        
+        print("Finishewd registering out user")
+        
+        
+        
+        
+       
     }
     
     fileprivate func showHUDWithError(error: Error) {
+        registeringHUD.dismiss()
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Failed Registration"
         hud.detailTextLabel.text = error.localizedDescription
@@ -191,6 +192,16 @@ class RegistrationController: UIViewController {
             self.selectPhotoButton.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
         
+        registrationViewModel.bindableIsResgistering.bind { [unowned self] isRegistering in
+            // registering
+            if isRegistering == true {
+                self.registeringHUD.textLabel.text = "Registering"
+                self.registeringHUD.show(in: self.view)
+            } else {
+                self.registeringHUD.dismiss()
+            }
+        }
+        
         
         // avoiding the reain cycle
         // updates the registration model
@@ -243,7 +254,7 @@ class RegistrationController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self) // can cause a retain cycle
+//        NotificationCenter.default.removeObserver(self) // can cause a retain cycle, doing this latter
     }
     
     
