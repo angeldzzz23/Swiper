@@ -10,15 +10,22 @@ import UIKit
 class RegistrationController: UIViewController {
     
     // MARK: UI components
+    
+    
     let selectPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Select Photo", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .heavy)
         button.backgroundColor = .white
         button.setTitleColor(.black, for: .normal)
-        button.heightAnchor.constraint(equalToConstant: 275).isActive = true
-        button.layer.cornerRadius = 16
+//        button.heightAnchor.constraint(equalToConstant: 275).isActive = true
         
+        let constraint = button.heightAnchor.constraint(equalToConstant: 275)
+        constraint.priority = UILayoutPriority(1000)
+        constraint.isActive = true
+        
+        
+        button.layer.cornerRadius = 16
         return button
     }()
     
@@ -27,9 +34,19 @@ class RegistrationController: UIViewController {
         button.setTitle("Register", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
         button.setTitleColor(.white, for: .normal)
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        let constraint = button.heightAnchor.constraint(equalToConstant: 50)
+        constraint.priority = UILayoutPriority(999)
+        constraint.isActive = true
+        
         button.layer.cornerRadius = 25
-        button.backgroundColor =  #colorLiteral(red: 0.8074133396, green: 0.1035810784, blue: 0.3270690441, alpha: 1)
+//        button.backgroundColor =  #colorLiteral(red: 0.8074133396, green: 0.1035810784, blue: 0.3270690441, alpha: 1)
+        // making the button look disabled
+        button.backgroundColor =  .lightGray
+        button.setTitleColor(.gray, for: .disabled)
+        button.isEnabled = false
+
         return button
     }()
     
@@ -37,15 +54,39 @@ class RegistrationController: UIViewController {
        let tf = CustomTextfield(padding: 16)
         tf.placeholder = "enter full name"
         tf.backgroundColor = .white
-        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        let constraint = tf.heightAnchor.constraint(equalToConstant: 50)
+        constraint.priority = UILayoutPriority(999)
+        constraint.isActive = true
+        tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
 
         return tf
     }()
+    
+    
+    @objc fileprivate func handleTextChange(textfield: UITextField) {
+        if textfield == fullNameTextField {
+            registrationViewModel.fullName = textfield.text
+        } else if textfield == emailTextField {
+            registrationViewModel.email = textfield.text
+        } else { // this is the password textfield
+            registrationViewModel.password = textfield.text
+        }
+        
+        
+    }
     
     let emailTextField: UITextField = {
         let tf = CustomTextfield(padding: 16)
         tf.placeholder = "Enter Email"
         tf.backgroundColor = .white
+//        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        let constraint = tf.heightAnchor.constraint(equalToConstant: 50)
+        constraint.priority = UILayoutPriority(999)
+        constraint.isActive = true
+
+        tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
+
         return tf
     }()
     
@@ -54,6 +95,14 @@ class RegistrationController: UIViewController {
         tf.placeholder = "Enter password"
         tf.isSecureTextEntry = true
         tf.backgroundColor = .white
+//        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        let constraint = tf.heightAnchor.constraint(equalToConstant: 50)
+        constraint.priority = UILayoutPriority(999)
+        constraint.isActive = true
+        
+        tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
+
+
         return tf
     }()
     
@@ -66,8 +115,34 @@ class RegistrationController: UIViewController {
         setupLayout()
         setUpNotificationObservers()
         setupTapGesture()
+        setupRegistrationViewModelObserver()
         
     }
+    
+    let registrationViewModel = RegistrationViewModel()
+    
+    fileprivate func setupRegistrationViewModelObserver()  {
+        
+        // avoiding the reain cycle
+        registrationViewModel.isFormValidObserver = { [unowned self](isFormValid) in
+                print("form is changing, is it valid", isFormValid)
+            
+                // TODO: clean up here
+                self.RegisterButton.isEnabled = isFormValid
+                if isFormValid {
+                    self.RegisterButton.backgroundColor = #colorLiteral(red: 0.8074133396, green: 0.1035810784, blue: 0.3270690441, alpha: 1)
+                    self.RegisterButton.setTitleColor(.white, for: .normal)
+                } else {
+                    self.RegisterButton.backgroundColor = .lightGray
+                    self.RegisterButton.setTitleColor(.gray, for: .normal)
+                }
+            
+        }
+        
+        
+        
+    }
+    
     fileprivate func setupTapGesture() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
         
@@ -168,13 +243,14 @@ class RegistrationController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if self.traitCollection.verticalSizeClass == .compact {
             pverallStackView.axis = .horizontal
+            
         } else {
             pverallStackView.axis = .vertical
             
         }
     }
                                             
-                                            
+    
     fileprivate func setupLayout() {
         // Do any additional setup after loading the view.
         
@@ -184,7 +260,12 @@ class RegistrationController: UIViewController {
     
         pverallStackView.axis = .vertical
         pverallStackView.spacing = 8
-        selectPhotoButton.widthAnchor.constraint(equalToConstant: 275).isActive = true
+        
+        let constraint =  selectPhotoButton.widthAnchor.constraint(equalToConstant: 275)
+        constraint.priority = UILayoutPriority(999)
+        constraint.isActive = true
+        // The error happens whenever I add this line of code
+//        selectPhotoButton.widthAnchor.constraint(equalToConstant: 275).isActive = true
      
         pverallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         pverallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
