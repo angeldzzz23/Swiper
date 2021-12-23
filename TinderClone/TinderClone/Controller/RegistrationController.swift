@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import Firebase
+import JGProgressHUD
+import JGProgressHUD
 
 class RegistrationController: UIViewController {
     
@@ -35,7 +38,7 @@ class RegistrationController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
         button.setTitleColor(.white, for: .normal)
 //        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
+        // adding constraint
         let constraint = button.heightAnchor.constraint(equalToConstant: 50)
         constraint.priority = UILayoutPriority(999)
         constraint.isActive = true
@@ -46,9 +49,43 @@ class RegistrationController: UIViewController {
         button.backgroundColor =  .lightGray
         button.setTitleColor(.gray, for: .disabled)
         button.isEnabled = false
+        
+        // add target action handling
+        button.addTarget(self, action: #selector(handleTapButton), for: .touchUpInside)
+        
 
         return button
     }()
+    
+    @objc fileprivate func handleTapButton() {
+        // dismisses the keyboard
+        self.handleTapDismiss()
+        
+        guard let email = emailTextField.text else {return}
+        
+        guard let pass = passwordTextField.text else {return}
+        
+        
+        
+        // adding user
+        Auth.auth().createUser(withEmail: email, password: pass) { res, err in
+            if let err = err {
+                print(err)
+                self.showHUDWithError(error: err)
+                return
+            }
+            
+            print("user was registered", res?.user.uid ?? "")
+        }
+    }
+    
+    fileprivate func showHUDWithError(error: Error) {
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Failed Registration"
+        hud.detailTextLabel.text = error.localizedDescription
+        hud.show(in: self.view)
+        hud.dismiss(afterDelay: 4) // dimisses after four seconds
+    }
     
     let fullNameTextField: UITextField = {
        let tf = CustomTextfield(padding: 16)
@@ -136,10 +173,7 @@ class RegistrationController: UIViewController {
                     self.RegisterButton.backgroundColor = .lightGray
                     self.RegisterButton.setTitleColor(.gray, for: .normal)
                 }
-            
         }
-        
-        
         
     }
     

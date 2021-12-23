@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>179237719445-jtd0g1el17o2r1fr5mmhq0c2bev9nd1g.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.179237719445-jtd0g1el17o2r1fr5mmhq0c2bev9nd1g</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD-cNrazdHxTuKsLEiAHLGkWMIQP4j25K4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>179237719445</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>anOrg.TinderClone</string>
+	<key>PROJECT_ID</key>
+	<string>swipematch-d6360</string>
+	<key>STORAGE_BUCKET</key>
+	<string>swipematch-d6360.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:179237719445:ios:21f1382064143dd95c7a9c</string>
+</dict>
+</plist>

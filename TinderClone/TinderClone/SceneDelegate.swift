@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,6 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        guard let _ = (scene as? UIWindowScene) else { return }
         
         if let windowScene = scene as? UIWindowScene {
+//            FirebaseApp.configure()
+            
             let window = UIWindow(windowScene: windowScene)
             let rootVC = RegistrationController()
             window.rootViewController = rootVC
