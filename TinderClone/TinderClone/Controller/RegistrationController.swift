@@ -14,7 +14,6 @@ class RegistrationController: UIViewController {
     
     // MARK: UI components
     
-    
     let selectPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Select Photo", for: .normal)
@@ -24,13 +23,27 @@ class RegistrationController: UIViewController {
 //        button.heightAnchor.constraint(equalToConstant: 275).isActive = true
         
         let constraint = button.heightAnchor.constraint(equalToConstant: 275)
-        constraint.priority = UILayoutPriority(1000)
+        constraint.priority = UILayoutPriority(999)
         constraint.isActive = true
         
-        
         button.layer.cornerRadius = 16
+        
+        // adding tartget
+        button.addTarget(self, action: #selector(handleSelectButton), for: .touchUpInside)
+        
+        button.imageView?.contentMode = .scaleAspectFill
+        button.clipsToBounds = true
         return button
     }()
+    
+    // handles the select photo butto
+    @objc func handleSelectButton() {
+        print("select photo")
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        present(imagePickerController, animated: true)
+        
+    }
     
     let RegisterButton: UIButton = {
         let button = UIButton(type: .system)
@@ -61,13 +74,13 @@ class RegistrationController: UIViewController {
         // dismisses the keyboard
         self.handleTapDismiss()
         
+        // make sure that the textfields are not empty
         guard let email = emailTextField.text else {return}
         
         guard let pass = passwordTextField.text else {return}
         
         
-        
-        // adding user
+        // adding user to firebase
         Auth.auth().createUser(withEmail: email, password: pass) { res, err in
             if let err = err {
                 print(err)
@@ -160,20 +173,49 @@ class RegistrationController: UIViewController {
     
     fileprivate func setupRegistrationViewModelObserver()  {
         
-        // avoiding the reain cycle
-        registrationViewModel.isFormValidObserver = { [unowned self](isFormValid) in
-                print("form is changing, is it valid", isFormValid)
+        registrationViewModel.bindableIsFormValid.bind { [unowned self] isFormValid in
             
-                // TODO: clean up here
-                self.RegisterButton.isEnabled = isFormValid
-                if isFormValid {
-                    self.RegisterButton.backgroundColor = #colorLiteral(red: 0.8074133396, green: 0.1035810784, blue: 0.3270690441, alpha: 1)
-                    self.RegisterButton.setTitleColor(.white, for: .normal)
-                } else {
-                    self.RegisterButton.backgroundColor = .lightGray
-                    self.RegisterButton.setTitleColor(.gray, for: .normal)
-                }
+            guard let isFormValid = isFormValid else {return}
+            
+            self.RegisterButton.isEnabled = isFormValid
+            if isFormValid {
+                self.RegisterButton.backgroundColor = #colorLiteral(red: 0.8074133396, green: 0.1035810784, blue: 0.3270690441, alpha: 1)
+                self.RegisterButton.setTitleColor(.white, for: .normal)
+            } else {
+                self.RegisterButton.backgroundColor = .lightGray
+                self.RegisterButton.setTitleColor(.gray, for: .normal)
+            }
         }
+        
+        registrationViewModel.bindableImage.bind { [unowned self] img in
+            self.selectPhotoButton.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        
+        // avoiding the reain cycle
+        // updates the registration model
+//        registrationViewModel.isFormValidObserver = { [unowned self] (isFormValid) in
+//                print("form is changing, is it valid", isFormValid)
+//
+//                // TODO: clean up here
+//                self.RegisterButton.isEnabled = isFormValid
+//                if isFormValid {
+//                    self.RegisterButton.backgroundColor = #colorLiteral(red: 0.8074133396, green: 0.1035810784, blue: 0.3270690441, alpha: 1)
+//                    self.RegisterButton.setTitleColor(.white, for: .normal)
+//                } else {
+//                    self.RegisterButton.backgroundColor = .lightGray
+//                    self.RegisterButton.setTitleColor(.gray, for: .normal)
+//                }
+//        }
+        
+        // registration view is now able to track with the actual registration
+
+        
+        // updates the image observer
+//        registrationViewModel.imageObsever = { [unowned self] img in
+//            self.selectPhotoButton.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
+//
+//        }
         
     }
     
@@ -303,5 +345,22 @@ class RegistrationController: UIViewController {
      
         pverallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         pverallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+}
+
+
+// delegate extensions for the image picker
+extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true) // dimisses the picker
+    }
+    
+    // the info parameter is the dictionary that maps to an any object
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.originalImage] as? UIImage // gets the image from the picker view
+        registrationViewModel.bindableImage.value = image
+        
+        dismiss(animated: true, completion: nil)
     }
 }
