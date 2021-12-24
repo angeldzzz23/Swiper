@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class HomeController: UIViewController {
     
@@ -16,20 +17,26 @@ class HomeController: UIViewController {
     
 
     // closure that maps every produces to call cardViewModel methodb
-    let cardViewModels: [CardViewModel] = {
-        let producers =
-            [
-                User(name: "Angel", age: 22, proffession: "Coffee Drinker", imageNames: ["kelly1", "kelly2", "kelly3"]),
-                Advertiser(title: "MCDIES", brandName: "I am hungry, food!!! food!!", posterPhotoName: "mcdonalds_print_aotw"),
-                User(name: "Jane", age: 18, proffession: "Teacher", imageNames: ["jane1", "jane2", "jane3"])
-            ] as [ProducesCardViewModel]
-        
-        let viewModels = producers.map({return $0.toCardViewModel()})
-        
-        return viewModels
-        
-        
-    }()
+//    let cardViewModels: [CardViewModel] = {
+//        let producers =
+//            [
+//                User(name: "Angel", age: 22, proffession: "Coffee Drinker", imageNames: ["kelly1", "kelly2", "kelly3"]),
+//                Advertiser(title: "MCDIES", brandName: "I am hungry, food!!! food!!", posterPhotoName: "mcdonalds_print_aotw"),
+//                User(name: "Jane", age: 18, proffession: "Teacher", imageNames: ["jane1", "jane2", "jane3"])
+//            ] as [ProducesCardViewModel]
+//
+//        let viewModels = producers.map({return $0.toCardViewModel()})
+//
+//        return viewModels
+//
+//
+//    }()
+    
+    var cardViewModels = [CardViewModel]() // empty array
+    
+    
+    
+    
         
    
     override func viewDidLoad() {
@@ -47,7 +54,22 @@ class HomeController: UIViewController {
     
     /// gets the users from the firestore
     fileprivate func fetchUsersFromFirestore() {
-        
+        Firestore.firestore().collection("users").getDocuments { snapchot, err in
+            if let err  = err { // if there was an error
+                print("Failed to fetch users:", err)
+                return
+            }
+            // if everything was successful
+            //query document stanpchaot is
+            snapchot?.documents.forEach({ documentSnaphot in
+                let userDictionary = documentSnaphot.data() // gets the user dictionaries
+                let user = User(dictionary: userDictionary)
+                self.cardViewModels.append(user.toCardViewModel())
+                
+            })
+            self.setupDummyCards()
+            
+        }
     }
     
     

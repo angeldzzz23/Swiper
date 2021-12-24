@@ -6,14 +6,17 @@
 //
 
 import UIKit
-
+import SDWebImage // it is useful for loadin g images
 class CardView: UIView {
 
     var cardViewModel: CardViewModel! {
         didSet {
             
             let imageName = cardViewModel.imageNames.first ?? ""
-            imageView.image = UIImage(named: imageName)
+            if let url = URL(string: imageName) {
+                imageView.sd_setImage(with: url)
+            }
+           
             InformationLabel.attributedText = cardViewModel.attributedString
             InformationLabel.textAlignment = cardViewModel.textAlignment
             
