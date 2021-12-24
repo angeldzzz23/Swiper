@@ -35,10 +35,18 @@ class HomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+  
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         
         setupLayout()
         setupDummyCards()
+        
+        fetchUsersFromFirestore()
+        
+    }
+    
+    /// gets the users from the firestore
+    fileprivate func fetchUsersFromFirestore() {
         
     }
     
@@ -72,8 +80,12 @@ class HomeController: UIViewController {
     
     // MARK: setting up the layout
     fileprivate func setupLayout() {
+        // setting up the background of our view
+        view.backgroundColor = .white // setting the
         
+        // this is the main stackview
         let overallStackView  = UIStackView(arrangedSubviews: [topStackView, cardDeckView,buttonStackView])
+        
         
         overallStackView.axis = .vertical // makes it spand in the vertical axis
         view.addSubview(overallStackView)

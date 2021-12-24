@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            FirebaseApp.configure()
             
             let window = UIWindow(windowScene: windowScene)
-            let rootVC = RegistrationController()
+            let rootVC = HomeController()
             window.rootViewController = rootVC
             self.window = window
             window.makeKeyAndVisible()
