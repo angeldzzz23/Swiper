@@ -46,7 +46,7 @@ class HomeController: UIViewController {
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         
         setupLayout()
-        setupDummyCards()
+        setupFireStoreUserCards()
         
         fetchUsersFromFirestore()
         
@@ -54,20 +54,26 @@ class HomeController: UIViewController {
     
     /// gets the users from the firestore
     fileprivate func fetchUsersFromFirestore() {
-        Firestore.firestore().collection("users").getDocuments { snapchot, err in
+        // calling the collection of users and getting all of those documents
+        let query = Firestore.firestore().collection("users")
+//        let query = Firestore.firestore().collection("users").whereField("age", isEqualTo: 24)
+//        let query = Firestore.firestore().collection("users").whereField("age", isLessThan: 31)
+        
+        
+         query.getDocuments { snapchot, err in
             if let err  = err { // if there was an error
                 print("Failed to fetch users:", err)
                 return
             }
             // if everything was successful
-            //query document stanpchaot is
+            //query document sna is
             snapchot?.documents.forEach({ documentSnaphot in
                 let userDictionary = documentSnaphot.data() // gets the user dictionaries
                 let user = User(dictionary: userDictionary)
                 self.cardViewModels.append(user.toCardViewModel())
                 
             })
-            self.setupDummyCards()
+            self.setupFireStoreUserCards()
             
         }
     }
@@ -84,7 +90,7 @@ class HomeController: UIViewController {
     
     
     
-    fileprivate func setupDummyCards()  {
+    fileprivate func setupFireStoreUserCards()  {
         
         cardViewModels.forEach { cardVM in
             let cardView = CardView(frame: .zero) // this is just a rect with 0, 0, doesnt matter since we are using autolayout

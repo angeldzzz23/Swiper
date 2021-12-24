@@ -24,14 +24,14 @@ class CardViewModel {
     
     fileprivate var imageIndex = 0 {
         didSet {
-            let imageName = imageNames[imageIndex]
-            let image = UIImage(named: imageName)
-            imageIndexObserver?(imageIndex,image)
+            let imageURL = imageNames[imageIndex]
+//            let image = UIImage(named: imageName)
+            imageIndexObserver?(imageIndex,imageURL)
         }
     }
     
     // reactive programming
-    var imageIndexObserver: ((Int,UIImage?) -> ())?
+    var imageIndexObserver: ((Int,String?) -> ())?
     
      func advanceToNextPhoto() {
          imageIndex  = min(imageIndex + 1, imageNames.count - 1)

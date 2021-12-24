@@ -17,7 +17,6 @@ class CustomTextfield: UITextField {
         layer.cornerRadius = 25
     }
     
-   
     // adding padding to the textfield
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.insetBy(dx: padding, dy: 0)
