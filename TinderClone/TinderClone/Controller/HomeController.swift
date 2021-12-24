@@ -86,10 +86,9 @@ class HomeController: UIViewController {
     
     
     @objc func handleSettings() {
-        print("show registration page")
-        let registrationController = RegistrationController()
-        
-        present(registrationController, animated: true)
+        let settingsnController = SettingsController()
+        let navController = UINavigationController(rootViewController: settingsnController)
+        present(navController, animated: true)
         
     }
     
