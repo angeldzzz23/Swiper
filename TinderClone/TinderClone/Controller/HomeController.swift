@@ -7,30 +7,15 @@
 
 import UIKit
 import Firebase
+import JGProgressHUD // importing progress hud
 
 class HomeController: UIViewController {
     
     // instance properties
     let topStackView = TopNavigationStackView()
     let cardDeckView = UIView()
-    let buttonStackView = HomeBottomControlsStackView()
+    let buttonControlsStackView = HomeBottomControlsStackView()
     
-
-    // closure that maps every produces to call cardViewModel methodb
-//    let cardViewModels: [CardViewModel] = {
-//        let producers =
-//            [
-//                User(name: "Angel", age: 22, proffession: "Coffee Drinker", imageNames: ["kelly1", "kelly2", "kelly3"]),
-//                Advertiser(title: "MCDIES", brandName: "I am hungry, food!!! food!!", posterPhotoName: "mcdonalds_print_aotw"),
-//                User(name: "Jane", age: 18, proffession: "Teacher", imageNames: ["jane1", "jane2", "jane3"])
-//            ] as [ProducesCardViewModel]
-//
-//        let viewModels = producers.map({return $0.toCardViewModel()})
-//
-//        return viewModels
-//
-//
-//    }()
     
     var cardViewModels = [CardViewModel]() // empty array
     
@@ -42,25 +27,36 @@ class HomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-  
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+        
+        buttonControlsStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         
         setupLayout()
         setupFireStoreUserCards()
-        
+            
         fetchUsersFromFirestore()
         
     }
     
+    //
+    @objc fileprivate func handleRefresh() {
+        fetchUsersFromFirestore()
+    }
+    
+    var lastFetchedUser: User?
+    
     /// gets the users from the firestore
     fileprivate func fetchUsersFromFirestore() {
-        // calling the collection of users and getting all of those documents
-        let query = Firestore.firestore().collection("users")
-//        let query = Firestore.firestore().collection("users").whereField("age", isEqualTo: 24)
-//        let query = Firestore.firestore().collection("users").whereField("age", isLessThan: 31)
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Fetching users"
+        hud.show(in: view)
+        // pagination to page through 2 users at a time
+        let limit = 2 // the limit of users that you want paginate
+        let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastFetchedUser?.uid ?? ""]).limit(to: limit)
         
         
          query.getDocuments { snapchot, err in
+             hud.dismiss()
             if let err  = err { // if there was an error
                 print("Failed to fetch users:", err)
                 return
@@ -69,13 +65,22 @@ class HomeController: UIViewController {
             //query document sna is
             snapchot?.documents.forEach({ documentSnaphot in
                 let userDictionary = documentSnaphot.data() // gets the user dictionaries
-                let user = User(dictionary: userDictionary)
-                self.cardViewModels.append(user.toCardViewModel())
-                
+                let user = User(dictionary: userDictionary) // creating a new user
+                self.cardViewModels.append(user.toCardViewModel()) // setting up our cards
+                self.lastFetchedUser = user // getting the last fetched user
+                self.setupCardFromUser(user: user)
             })
-            self.setupFireStoreUserCards()
+//            self.setupFireStoreUserCards()
             
         }
+    }
+    
+    fileprivate func setupCardFromUser(user: User) {
+        let cardView = CardView(frame: .zero) // this is just a rect with 0, 0, doesnt matter since we are using autolayout
+        cardView.cardViewModel = user.toCardViewModel()
+        cardDeckView.addSubview(cardView)
+        cardDeckView.sendSubviewToBack(cardView) // what does this do?
+        cardView.fillSuperview()
     }
     
     
@@ -112,7 +117,7 @@ class HomeController: UIViewController {
         view.backgroundColor = .white // setting the
         
         // this is the main stackview
-        let overallStackView  = UIStackView(arrangedSubviews: [topStackView, cardDeckView,buttonStackView])
+        let overallStackView  = UIStackView(arrangedSubviews: [topStackView, cardDeckView,buttonControlsStackView])
         
         
         overallStackView.axis = .vertical // makes it spand in the vertical axis
