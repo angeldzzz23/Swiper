@@ -11,6 +11,7 @@ class CustomImagePickerController: UIImagePickerController {
     var imageButton: UIButton?
     
 }
+// Get 
 
 // extensiton to our imageopicker
 
@@ -67,10 +68,14 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         setupNavigationItem()
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.tableFooterView = UIView() // gets ride of horizontal lines
-        
+        tableView.keyboardDismissMode = .interactive
+//        contentView.isUserInteractionEnabled = true
+//        contentView.isUserInteractionEnabled = true
+        tableView.isUserInteractionEnabled = true
+
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    lazy var header: UIView = {
         let header = UIView()
         header.backgroundColor = .blue
         
@@ -90,16 +95,82 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         
         header.addSubview(stackView)
         stackView.anchor(top: header.topAnchor, leading: image1Button.trailingAnchor, bottom: header.bottomAnchor, trailing: header.trailingAnchor, padding: .init(top: padding, left: padding, bottom: padding, right: padding))
+    return header
+    }()
     
+    //
+    class HeaderLabel: UILabel {
+        override func drawText(in rect: CGRect) {
+            super.drawText(in: rect.insetBy(dx: 16, dy: 0))
+        }
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+     
+        if section == 0 {
+            return header
+        }
+        
+        let headerLabel = HeaderLabel()
+        headerLabel.text = "Name"
+        
+        switch section {
+        case 1:
+            headerLabel.text = "Name"
+        case 2:
+            headerLabel.text = "Proffession"
+        case 3:
+            headerLabel.text = "Age"
+        default:
+            headerLabel.text = "Bio"
+        }
+        
+        return headerLabel
+        
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = SettingsCell(style: .default, reuseIdentifier: nil)
+        
+        switch indexPath.section {
+        case 1:
+            cell.textfield.placeholder = "Name"
+        case 2:
+            cell.textfield.placeholder = "Enter Proffession"
+        case 3:
+            cell.textfield.placeholder = "Enter Age"
+        default:
+            cell.textfield.placeholder = "Enter Bio"
+            
+        }
+        
+        
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+     
         
         
         
-        return header
+        return (section == 0) ? 0 :  1
+    }
+    
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 5
     }
     
     //
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 300
+        
+        if section == 0 {
+            return 300
+        }
+        
+        return 40
     }
     
     fileprivate func setupNavigationItem() {

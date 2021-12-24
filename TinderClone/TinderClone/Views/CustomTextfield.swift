@@ -15,6 +15,7 @@ class CustomTextfield: UITextField {
         self.padding = padding
         super.init(frame: .zero)
         layer.cornerRadius = 25
+        
     }
     
     // adding padding to the textfield
