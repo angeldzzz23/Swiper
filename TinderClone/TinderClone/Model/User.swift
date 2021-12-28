@@ -16,6 +16,8 @@ struct User: ProducesCardViewModel {
     var uid: String?
 //    let imageNames: [String]
     var imageUrl1: String?
+    var imageUrl2: String?
+    var imageUrl3: String?
     
     init(dictionary: [String: Any]) {
         // initialize our user data
@@ -25,7 +27,9 @@ struct User: ProducesCardViewModel {
         
       
         self.name = dictionary["fullname"] as? String ?? ""
-        self.imageUrl1 = dictionary["imageUrl1"] as? String ?? ""
+        self.imageUrl1 = dictionary["imageUrl1"] as? String
+        self.imageUrl2 = dictionary["imageUrl1"] as? String
+        self.imageUrl3 = dictionary["imageUrl1"] as? String
         self.uid = dictionary["uid"] as? String ?? ""
         
     }

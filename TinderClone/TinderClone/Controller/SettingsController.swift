@@ -28,6 +28,48 @@ extension SettingsController: UIImagePickerControllerDelegate {
         imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal) // setting the imageButton
          
         dismiss(animated: true) // dismissing the image picker after our selecting
+     
+        // uploading data
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Uploading image..."
+        hud.show(in: view)
+        let filename = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+        
+        // we chose an arbitrary value
+        guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
+        
+        ref.putData(uploadData, metadata: nil) { _, err in
+           
+            if let err = err {
+                print("Failed to upload image to storage", err)
+                return
+            }
+            print("Finished uploading image")
+            // get the download url
+            ref.downloadURL { url, err in
+                hud.dismiss()
+                if let err = err {
+                    print("Failed to retrieve download URL:", err)
+                    return
+                }
+                
+                print("finished getting download url:", url?.absoluteURL ?? "")
+                
+                //update the correct button
+                if imageButton == self.image1Button {
+                    self.user?.imageUrl1 = url?.absoluteString
+                } else if imageButton == self.image2Button {
+                    self.user?.imageUrl2 = url?.absoluteString
+                } else {
+                    self.user?.imageUrl3 = url?.absoluteString
+
+                }
+              
+                
+            }
+        }
         
     }
 }
@@ -106,9 +148,10 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         }
     }
     
-    
+    // TODO:
     fileprivate func loadUserPhotos() {
         guard let imgUrl = user?.imageUrl1, let url = URL(string: imgUrl) else {return}
+        
 //        SDWebImageDownloader.shared().loadImage
         // SDWebImageManager makes it easier to load it in our cache
         SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil, completed: {image,_,_,_,_,_ in
@@ -263,7 +306,7 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
     
     
     /// the function that deals with saving
-    /// also contains feed back hud to show when the data is done uploading 
+    /// also contains feed back hud to show when the data is done uploading
     @objc fileprivate func handleSave() {
         // persist the data
         guard let uid = Auth.auth().currentUser?.uid else {return }
@@ -272,6 +315,8 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
             "uid" : uid,
             "fullname" : user?.name ?? "",
             "imageUrl1" : user?.imageUrl1 ?? "",
+            "imageUrl2" : user?.imageUrl2 ?? "",
+            "imageUrl3" : user?.imageUrl3 ?? "",
             "age" : user?.age ?? -1,
             "proffession": user?.proffession ?? ""
         ]
@@ -280,15 +325,16 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         hud.textLabel.text = "Saving Settings"
         hud.show(in: view)
         
+        // accessing the collection of users
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: false) { err in
-            hud.dismiss()
-            if let err = err {
+            hud.dismiss() // dimisses the the hud
+            if let err = err { // checks if there was an error
                 print("Failed to save user settings:", err)
                 return
             }
             print("Finished saving user info")
         }
-        
+    
     }
     
     @objc fileprivate func handleCancel() {
