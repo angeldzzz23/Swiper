@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import Firebase
+import JGProgressHUD
+import SDWebImage
 
 class CustomImagePickerController: UIImagePickerController {
     var imageButton: UIButton?
@@ -71,9 +74,57 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         tableView.keyboardDismissMode = .interactive
 //        contentView.isUserInteractionEnabled = true
 //        contentView.isUserInteractionEnabled = true
+        
+        fetchCurrentUser()
+        
         tableView.isUserInteractionEnabled = true
 
     }
+    
+    var user: User?
+    
+    
+    /// fetches a user from the firestore
+    fileprivate func fetchCurrentUser() {
+        // fetch some firesotre data
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        
+        Firestore.firestore().collection("users").document(uid).getDocument { snapchot, err in
+            //check if there is an error
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            // fech the user
+            guard let dictionary = snapchot?.data() else {return}
+            self.user = User(dictionary: dictionary)
+            self.loadUserPhotos()
+            
+            self.tableView.reloadData()
+        }
+    }
+    
+    
+    fileprivate func loadUserPhotos() {
+        guard let imgUrl = user?.imageUrl1, let url = URL(string: imgUrl) else {return}
+//        SDWebImageDownloader.shared().loadImage
+        // SDWebImageManager makes it easier to load it in our cache 
+        SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil, completed: {image,_,_,_,_,_ in
+            
+            self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            
+            
+        })
+        
+        
+//        self.user?.imageUrl1
+        
+    }
+    
+    
+
     
     lazy var header: UIView = {
         let header = UIView()
@@ -118,6 +169,7 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         switch section {
         case 1:
             headerLabel.text = "Name"
+            
         case 2:
             headerLabel.text = "Proffession"
         case 3:
@@ -136,11 +188,17 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         
         switch indexPath.section {
         case 1:
-            cell.textfield.placeholder = "Name"
+            cell.textfield.placeholder = "Enter Name"
+            cell.textfield.text = user?.name
         case 2:
             cell.textfield.placeholder = "Enter Proffession"
+            cell.textfield.text = user?.proffession
         case 3:
             cell.textfield.placeholder = "Enter Age"
+            if let age = user?.age {
+                cell.textfield.text = String(age)
+            }
+        
         default:
             cell.textfield.placeholder = "Enter Bio"
             

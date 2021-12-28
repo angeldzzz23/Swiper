@@ -20,10 +20,6 @@ class HomeController: UIViewController {
     var cardViewModels = [CardViewModel]() // empty array
     
     
-    
-    
-        
-   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,7 +34,6 @@ class HomeController: UIViewController {
         
     }
     
-    //
     @objc fileprivate func handleRefresh() {
         fetchUsersFromFirestore()
     }
