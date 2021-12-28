@@ -28,11 +28,12 @@ struct User: ProducesCardViewModel {
       
         self.name = dictionary["fullname"] as? String ?? ""
         self.imageUrl1 = dictionary["imageUrl1"] as? String
-        self.imageUrl2 = dictionary["imageUrl1"] as? String
-        self.imageUrl3 = dictionary["imageUrl1"] as? String
+        self.imageUrl2 = dictionary["imageUrl2"] as? String
+        self.imageUrl3 = dictionary["imageUrl3"] as? String
         self.uid = dictionary["uid"] as? String ?? ""
         
     }
+    
     
     func toCardViewModel() -> CardViewModel {
         let attributedText = NSMutableAttributedString(string: name ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
@@ -46,7 +47,15 @@ struct User: ProducesCardViewModel {
         
         attributedText.append(NSAttributedString(string: "\n\(proffessionString)", attributes: [.font : UIFont.systemFont(ofSize: 20, weight: .regular)]))
         
-        return CardViewModel(imageNames: [imageUrl1 ?? ""], attributedString: attributedText, textAlignment: .left)
+        
+        // here we are making sure that we only put the images that the user has enterted
+        var imageUrls = [String]()
+        if let url = imageUrl1 {imageUrls.append(url)}
+        if let url = imageUrl2 {imageUrls.append(url)}
+        if let url = imageUrl3 {imageUrls.append(url)}
+        
+        
+        return CardViewModel(imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
     }
     
 }

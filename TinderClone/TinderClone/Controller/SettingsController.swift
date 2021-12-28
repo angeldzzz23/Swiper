@@ -64,6 +64,7 @@ extension SettingsController: UIImagePickerControllerDelegate {
                     self.user?.imageUrl2 = url?.absoluteString
                 } else {
                     self.user?.imageUrl3 = url?.absoluteString
+                
 
                 }
               
@@ -150,17 +151,38 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
     
     // TODO:
     fileprivate func loadUserPhotos() {
-        guard let imgUrl = user?.imageUrl1, let url = URL(string: imgUrl) else {return}
-        
+        if  let imgUrl = user?.imageUrl1, let url = URL(string: imgUrl)  {
 //        SDWebImageDownloader.shared().loadImage
         // SDWebImageManager makes it easier to load it in our cache
         SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil, completed: {image,_,_,_,_,_ in
-            
             self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             
+        })
+                
+        }
+        
+        if  let imgUrl = user?.imageUrl2, let url = URL(string: imgUrl)  {
+//        SDWebImageDownloader.shared().loadImage
+        // SDWebImageManager makes it easier to load it in our cache
+        SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil, completed: {image,_,_,_,_,_ in
+            self.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             
         })
+                
+        }
         
+        if  let imgUrl = user?.imageUrl3, let url = URL(string: imgUrl)  {
+//        SDWebImageDownloader.shared().loadImage
+        // SDWebImageManager makes it easier to load it in our cache
+        SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil, completed: {image,_,_,_,_,_ in
+            self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            
+        })
+                
+        }
+        
+                
+
         
 //        self.user?.imageUrl1
         
