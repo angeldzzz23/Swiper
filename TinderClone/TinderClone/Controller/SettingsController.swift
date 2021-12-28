@@ -263,6 +263,7 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
     
     
     /// the function that deals with saving
+    /// also contains feed back hud to show when the data is done uploading 
     @objc fileprivate func handleSave() {
         // persist the data
         guard let uid = Auth.auth().currentUser?.uid else {return }
@@ -275,7 +276,12 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
             "proffession": user?.proffession ?? ""
         ]
         
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Saving Settings"
+        hud.show(in: view)
+        
         Firestore.firestore().collection("users").document(uid).setData(docData, merge: false) { err in
+            hud.dismiss()
             if let err = err {
                 print("Failed to save user settings:", err)
                 return
