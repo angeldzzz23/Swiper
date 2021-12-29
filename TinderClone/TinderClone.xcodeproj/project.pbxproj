@@ -22,6 +22,7 @@
 		1CD40DDC2771D7ED0059FB73 /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD40DDB2771D7ED0059FB73 /* Advertiser.swift */; };
 		1CD91F23277600C700D44F0C /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F22277600C700D44F0C /* SettingsController.swift */; };
 		1CD91F252776129200D44F0C /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F242776129200D44F0C /* SettingsCell.swift */; };
+		1CD91F55277C132700D44F0C /* AgeRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F54277C132700D44F0C /* AgeRangeCell.swift */; };
 		1CE56A7A2772F26500A85806 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56A792772F26500A85806 /* RegistrationController.swift */; };
 		1CE56A7C277330DD00A85806 /* CustomTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56A7B277330DD00A85806 /* CustomTextfield.swift */; };
 		1CE56A7E2774228900A85806 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56A7D2774228900A85806 /* RegistrationViewModel.swift */; };
@@ -48,6 +49,7 @@
 		1CD40DDB2771D7ED0059FB73 /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 		1CD91F22277600C700D44F0C /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		1CD91F242776129200D44F0C /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		1CD91F54277C132700D44F0C /* AgeRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeCell.swift; sourceTree = "<group>"; };
 		1CE56A792772F26500A85806 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		1CE56A7B277330DD00A85806 /* CustomTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfield.swift; sourceTree = "<group>"; };
 		1CE56A7D2774228900A85806 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				1CD40DD22771938B0059FB73 /* CardView.swift */,
 				1CE56A7B277330DD00A85806 /* CustomTextfield.swift */,
 				1CD91F242776129200D44F0C /* SettingsCell.swift */,
+				1CD91F54277C132700D44F0C /* AgeRangeCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				1CAD86F127707330001B53EB /* HomeController.swift in Sources */,
 				1CAD86ED27707330001B53EB /* AppDelegate.swift in Sources */,
 				1CAD870527708CEE001B53EB /* HomeBottomControlsStackView.swift in Sources */,
+				1CD91F55277C132700D44F0C /* AgeRangeCell.swift in Sources */,
 				1CD40DDA2771CBC50059FB73 /* CardViewModel.swift in Sources */,
 				1CD91F23277600C700D44F0C /* SettingsController.swift in Sources */,
 				1CE56A7A2772F26500A85806 /* RegistrationController.swift in Sources */,

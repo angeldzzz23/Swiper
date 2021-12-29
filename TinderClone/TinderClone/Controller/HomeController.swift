@@ -83,7 +83,9 @@ class HomeController: UIViewController {
     @objc func handleSettings() {
         let settingsnController = SettingsController()
         let navController = UINavigationController(rootViewController: settingsnController)
-        present(navController, animated: true)
+        navController.modalPresentationStyle = .fullScreen
+        self.present(navController, animated: true, completion: nil)
+        
         
     }
     

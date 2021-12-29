@@ -10,71 +10,6 @@ import Firebase
 import JGProgressHUD
 import SDWebImage
 
-class CustomImagePickerController: UIImagePickerController {
-    var imageButton: UIButton?
-    
-}
-// Get 
-
-// extensiton to our imageopicker
-
-extension SettingsController: UIImagePickerControllerDelegate {
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        let selectedImage = info[.originalImage] as? UIImage // getting our selected image
-        let imageButton = (picker as? CustomImagePickerController)?.imageButton // getting our image button
-        
-        imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal) // setting the imageButton
-         
-        dismiss(animated: true) // dismissing the image picker after our selecting
-     
-        // uploading data
-        
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = "Uploading image..."
-        hud.show(in: view)
-        let filename = UUID().uuidString
-        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
-        
-        // we chose an arbitrary value
-        guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
-        
-        ref.putData(uploadData, metadata: nil) { _, err in
-           
-            if let err = err {
-                print("Failed to upload image to storage", err)
-                return
-            }
-            print("Finished uploading image")
-            // get the download url
-            ref.downloadURL { url, err in
-                hud.dismiss()
-                if let err = err {
-                    print("Failed to retrieve download URL:", err)
-                    return
-                }
-                
-                print("finished getting download url:", url?.absoluteURL ?? "")
-                
-                //update the correct button
-                if imageButton == self.image1Button {
-                    self.user?.imageUrl1 = url?.absoluteString
-                } else if imageButton == self.image2Button {
-                    self.user?.imageUrl2 = url?.absoluteString
-                } else {
-                    self.user?.imageUrl3 = url?.absoluteString
-                
-
-                }
-              
-                
-            }
-        }
-        
-    }
-}
-
 //extension SettingsController:
 
 class SettingsController: UITableViewController, UINavigationControllerDelegate {
@@ -149,7 +84,8 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         }
     }
     
-    // TODO:
+    // TODO: I can still refactor this
+    /// loads the userPhotos using SDWebImageManager
     fileprivate func loadUserPhotos() {
         if  let imgUrl = user?.imageUrl1, let url = URL(string: imgUrl)  {
 //        SDWebImageDownloader.shared().loadImage
@@ -181,10 +117,6 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
                 
         }
         
-                
-
-        
-//        self.user?.imageUrl1
         
     }
     
@@ -193,8 +125,7 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
     
     lazy var header: UIView = {
         let header = UIView()
-        header.backgroundColor = .blue
-        
+        header.backgroundColor = UIColor(white: 0.95, alpha: 1)
         // creading the imagebutton that will lay on the left side
         header.addSubview(image1Button)
         let padding: CGFloat = 16
@@ -225,6 +156,7 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
      
         if section == 0 {
+            
             return header
         }
         
@@ -239,17 +171,56 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
             headerLabel.text = "Proffession"
         case 3:
             headerLabel.text = "Age"
-        default:
+        case 4:
             headerLabel.text = "Bio"
+        default:
+            headerLabel.text = "Seeking Age Range"
         }
+        headerLabel.font = UIFont.boldSystemFont(ofSize: 16)
         
         return headerLabel
         
         
     }
     
+    
+    /// updates the label as you move the slider and it also updates the user object
+    @objc fileprivate func handleMinAgeChange(slider: UISlider) {
+        // update the minLabl in AgeRangeCell
+        let indexpath = IndexPath(row: 0, section: 5)
+        let ageRangeCell = tableView.cellForRow(at: indexpath) as! AgeRangeCell
+        
+        ageRangeCell.minLabel.text = "Min \(Int(slider.value))"
+        
+        self.user?.minSeekingAge = Int(slider.value)
+        
+    }
+        
+    /// updated the labels as you move the handleMaxAgeChange and the user object
+    @objc fileprivate func handleMaxAgeChange(slider: UISlider) {
+        let indexpath = IndexPath(row: 0, section: 5)
+        let ageRangeCell = tableView.cellForRow(at: indexpath) as! AgeRangeCell
+        ageRangeCell.maxLabel.text = "Max \(Int(slider.value))"
+        
+        self.user?.maxSeekingAge = Int(slider.value)
+
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = SettingsCell(style: .default, reuseIdentifier: nil)
+        
+        // age range cell
+        if indexPath.section == 5 {
+            let ageRangeCell = AgeRangeCell(style: .default, reuseIdentifier: nil)
+            ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
+            ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
+
+            return ageRangeCell
+        }
+        
+        
+        
+        
         
         switch indexPath.section {
         case 1:
@@ -303,7 +274,7 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
     
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return 6
     }
     
     //
@@ -340,7 +311,10 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
             "imageUrl2" : user?.imageUrl2 ?? "",
             "imageUrl3" : user?.imageUrl3 ?? "",
             "age" : user?.age ?? -1,
-            "proffession": user?.proffession ?? ""
+            "proffession": user?.proffession ?? "",
+            "minSeekingAge" : user?.minSeekingAge ?? -1,
+            "maxSeekingAge" : user?.maxSeekingAge ?? -1
+            
         ]
         
         let hud = JGProgressHUD(style: .dark)
@@ -363,4 +337,72 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         dismiss(animated: true, completion: nil)
     }
 
+}
+
+
+// the customImagePickerController
+// contains the an imageButton
+class CustomImagePickerController: UIImagePickerController {
+    var imageButton: UIButton?
+    
+}
+
+
+// extensiton to our imageopicker
+
+extension SettingsController: UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        let selectedImage = info[.originalImage] as? UIImage // getting our selected image
+        let imageButton = (picker as? CustomImagePickerController)?.imageButton // getting our image button
+        
+        imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal) // setting the imageButton
+         
+        dismiss(animated: true) // dismissing the image picker after our selecting
+     
+        // uploading data
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Uploading image..."
+        hud.show(in: view)
+        let filename = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+        
+        // we chose an arbitrary value
+        guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
+        
+        ref.putData(uploadData, metadata: nil) { _, err in
+           
+            if let err = err {
+                print("Failed to upload image to storage", err)
+                return
+            }
+            print("Finished uploading image")
+            // get the download url
+            ref.downloadURL { url, err in
+                hud.dismiss()
+                if let err = err {
+                    print("Failed to retrieve download URL:", err)
+                    return
+                }
+                
+                print("finished getting download url:", url?.absoluteURL ?? "")
+                
+                //update the correct button
+                if imageButton == self.image1Button {
+                    self.user?.imageUrl1 = url?.absoluteString
+                } else if imageButton == self.image2Button {
+                    self.user?.imageUrl2 = url?.absoluteString
+                } else {
+                    self.user?.imageUrl3 = url?.absoluteString
+                
+
+                }
+              
+                
+            }
+        }
+        
+    }
 }
