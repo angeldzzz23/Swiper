@@ -190,7 +190,7 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         let indexpath = IndexPath(row: 0, section: 5)
         let ageRangeCell = tableView.cellForRow(at: indexpath) as! AgeRangeCell
         
-        ageRangeCell.minLabel.text = "Min \(Int(slider.value))"
+        ageRangeCell.minLabel.text = "Min: \(Int(slider.value))"
         
         self.user?.minSeekingAge = Int(slider.value)
         
@@ -200,12 +200,12 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
     @objc fileprivate func handleMaxAgeChange(slider: UISlider) {
         let indexpath = IndexPath(row: 0, section: 5)
         let ageRangeCell = tableView.cellForRow(at: indexpath) as! AgeRangeCell
-        ageRangeCell.maxLabel.text = "Max \(Int(slider.value))"
+        ageRangeCell.maxLabel.text = "Max: \(Int(slider.value))"
         
         self.user?.maxSeekingAge = Int(slider.value)
 
     }
-    
+    // TODO: when creating a new user, it will display a -1
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         
@@ -214,7 +214,11 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
             let ageRangeCell = AgeRangeCell(style: .default, reuseIdentifier: nil)
             ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
             ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
-
+            // set up the labels on our cells
+            ageRangeCell.minLabel.text = "Min: \(user?.minSeekingAge ?? -1)"
+            ageRangeCell.maxLabel.text = "Max: \(user?.maxSeekingAge ?? -1)"
+        
+            
             return ageRangeCell
         }
         
