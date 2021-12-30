@@ -7,8 +7,16 @@
 
 import UIKit
 import SDWebImage // it is useful for loadin g images
+
+protocol CardViewDelegate {
+    func didTapMoreInfo()
+}
+
 class CardView: UIView {
 
+    var delegate: CardViewDelegate?
+    
+    
     var cardViewModel: CardViewModel! {
         didSet {
             
@@ -90,6 +98,24 @@ class CardView: UIView {
         
     }
     
+    
+    // the button moreINfoButto
+    fileprivate let moreInfoButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "info_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(handleMoreInfo), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    /// this method is called when the button
+    /// Presenting the user details pare
+    @objc fileprivate func handleMoreInfo() {  // there is no presenrt here
+        // delegation to present a Viewcontroller
+        delegate?.didTapMoreInfo() 
+    }
+    
+    
     fileprivate func setUpLayout() {
         // adding corner radius
         layer.cornerRadius = 10
@@ -115,6 +141,12 @@ class CardView: UIView {
         InformationLabel.textColor = .white
         
         InformationLabel.numberOfLines = 0
+        
+        // adding the moreInfoButton
+        
+        addSubview(moreInfoButton)
+        
+        moreInfoButton.anchor(top: nil, leading: nil, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 16, right: 16), size: .init(width: 44, height: 44))
     }
     
     /// the top stack view that contains the bars

@@ -9,7 +9,9 @@ import UIKit
 import Firebase
 import JGProgressHUD // importing progress hud
 
-class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
+class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate {
+
+    
     
     // conforming to the LoginControllerDelegate
     func didFinishLoggingIn() {
@@ -112,11 +114,16 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             // if everything was successful
             //query document sna is
             snapchot?.documents.forEach({ documentSnaphot in
+                // setting up the users
                 let userDictionary = documentSnaphot.data() // gets the user dictionaries
                 let user = User(dictionary: userDictionary) // creating a new user
-                self.cardViewModels.append(user.toCardViewModel()) // setting up our cards
-                self.lastFetchedUser = user // getting the last fetched user
-                self.setupCardFromUser(user: user)
+                
+                if user.uid != Auth.auth().currentUser?.uid {
+                    self.setupCardFromUser(user: user)
+                }
+                
+//                self.cardViewModels.append(user.toCardViewModel()) // setting up our cards
+//                self.lastFetchedUser = user // getting the last fetched user
             })
 //            self.setupFireStoreUserCards()
             
@@ -125,12 +132,20 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     fileprivate func setupCardFromUser(user: User) {
         let cardView = CardView(frame: .zero) // this is just a rect with 0, 0, doesnt matter since we are using autolayout
+        cardView.delegate = self
         cardView.cardViewModel = user.toCardViewModel()
         cardDeckView.addSubview(cardView)
         cardDeckView.sendSubviewToBack(cardView) // what does this do?
         cardView.fillSuperview()
     }
     
+    /// conforming CardView Delegate
+    /// thiss
+    func didTapMoreInfo() {
+        let userDetailsController = userDetailsController()
+        userDetailsController.modalPresentationStyle = .fullScreen
+        present(userDetailsController, animated: true)
+    }
     
     
     @objc func handleSettings() {
