@@ -9,7 +9,15 @@ import UIKit
 import Firebase
 import JGProgressHUD // importing progress hud
 
-class HomeController: UIViewController {
+class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
+    
+    // conforming to the LoginControllerDelegate
+    func didFinishLoggingIn() {
+        // it makes a call to firebase to get the users
+     fetchCurrentUser()
+    }
+    
+   
     
     // instance properties
     let topStackView = TopNavigationStackView()
@@ -18,6 +26,22 @@ class HomeController: UIViewController {
     
     
     var cardViewModels = [CardViewModel]() // empty array
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // check if the user is logged out
+        if Auth.auth().currentUser == nil {
+            // kick the user out when they log out
+            let registrationController = LoginController()
+            registrationController.delegate = self
+            let navControler = UINavigationController(rootViewController: registrationController)
+            navControler.modalPresentationStyle = .fullScreen
+            present(navControler, animated: true)
+        }
+        
+       
+    }
     
     
     override func viewDidLoad() {
@@ -28,10 +52,35 @@ class HomeController: UIViewController {
         buttonControlsStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         
         setupLayout()
-        setupFireStoreUserCards()
-            
-        fetchUsersFromFirestore()
         
+        fetchCurrentUser()
+        
+//        setupFireStoreUserCards()
+            
+//        fetchUsersFromFirestore() //
+        
+    }
+    
+    fileprivate var user: User?
+    
+    /// gets the current user
+    // TODO: Refactor this, so that we can use only one method =
+    fileprivate func  fetchCurrentUser() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        
+        Firestore.firestore().collection("users").document(uid).getDocument { snapchot, err in
+            //check if there is an error
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            // fech the user
+            guard let dictionary = snapchot?.data() else {return}
+            self.user = User(dictionary: dictionary)
+            print("current user:", self.user)
+            self.fetchUsersFromFirestore()
+        }
     }
     
     @objc fileprivate func handleRefresh() {
@@ -41,13 +90,17 @@ class HomeController: UIViewController {
     var lastFetchedUser: User?
     
     /// gets the users from the firestore
+    /// uses paginagination
     fileprivate func fetchUsersFromFirestore() {
+        guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else {return }
+        
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Fetching users"
         hud.show(in: view)
         // pagination to page through 2 users at a time
         let limit = 2 // the limit of users that you want paginate
-        let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastFetchedUser?.uid ?? ""]).limit(to: limit)
+        // TODO: add pagination here
+        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
         
         
          query.getDocuments { snapchot, err in
@@ -82,11 +135,16 @@ class HomeController: UIViewController {
     
     @objc func handleSettings() {
         let settingsnController = SettingsController()
+        settingsnController.delegate = self
         let navController = UINavigationController(rootViewController: settingsnController)
         navController.modalPresentationStyle = .fullScreen
         self.present(navController, animated: true, completion: nil)
         
-        
+    }
+    
+    /// is called whenever Settings controller is dismissed
+    func didSaveSettings() {
+        fetchCurrentUser()
     }
     
     

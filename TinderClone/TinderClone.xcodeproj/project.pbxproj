@@ -23,6 +23,8 @@
 		1CD91F23277600C700D44F0C /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F22277600C700D44F0C /* SettingsController.swift */; };
 		1CD91F252776129200D44F0C /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F242776129200D44F0C /* SettingsCell.swift */; };
 		1CD91F55277C132700D44F0C /* AgeRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F54277C132700D44F0C /* AgeRangeCell.swift */; };
+		1CD91F5D277C44D100D44F0C /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F5B277C44D100D44F0C /* LoginController.swift */; };
+		1CD91F5E277C44D100D44F0C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F5C277C44D100D44F0C /* LoginViewModel.swift */; };
 		1CE56A7A2772F26500A85806 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56A792772F26500A85806 /* RegistrationController.swift */; };
 		1CE56A7C277330DD00A85806 /* CustomTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56A7B277330DD00A85806 /* CustomTextfield.swift */; };
 		1CE56A7E2774228900A85806 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56A7D2774228900A85806 /* RegistrationViewModel.swift */; };
@@ -50,6 +52,8 @@
 		1CD91F22277600C700D44F0C /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		1CD91F242776129200D44F0C /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		1CD91F54277C132700D44F0C /* AgeRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeCell.swift; sourceTree = "<group>"; };
+		1CD91F5B277C44D100D44F0C /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		1CD91F5C277C44D100D44F0C /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		1CE56A792772F26500A85806 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		1CE56A7B277330DD00A85806 /* CustomTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfield.swift; sourceTree = "<group>"; };
 		1CE56A7D2774228900A85806 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
@@ -150,6 +154,7 @@
 		1CD40DD72771CB210059FB73 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				1CD91F56277C395100D44F0C /* Login */,
 				1CAD86F027707330001B53EB /* HomeController.swift */,
 				1CE56A792772F26500A85806 /* RegistrationController.swift */,
 				1CE56AA12774691E00A85806 /* Bindable.swift */,
@@ -165,6 +170,15 @@
 				1CE56A7D2774228900A85806 /* RegistrationViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1CD91F56277C395100D44F0C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1CD91F5B277C44D100D44F0C /* LoginController.swift */,
+				1CD91F5C277C44D100D44F0C /* LoginViewModel.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		59F8D051F17AE237D144183D /* Pods */ = {
@@ -305,9 +319,11 @@
 				1CE56AA22774691E00A85806 /* Bindable.swift in Sources */,
 				1CE56A7C277330DD00A85806 /* CustomTextfield.swift in Sources */,
 				1CE56A7E2774228900A85806 /* RegistrationViewModel.swift in Sources */,
+				1CD91F5D277C44D100D44F0C /* LoginController.swift in Sources */,
 				1CAD8707277092EB001B53EB /* TopNavigationStackView.swift in Sources */,
 				1CAD87022770801E001B53EB /* Extensions+UIView.swift in Sources */,
 				1CD91F252776129200D44F0C /* SettingsCell.swift in Sources */,
+				1CD91F5E277C44D100D44F0C /* LoginViewModel.swift in Sources */,
 				1CAD86EF27707330001B53EB /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

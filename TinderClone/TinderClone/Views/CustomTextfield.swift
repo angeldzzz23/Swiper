@@ -10,11 +10,14 @@ import UIKit
 // changes the intrinsic height of the text field
 class CustomTextfield: UITextField {
     let padding: CGFloat
+    let height: CGFloat
     
-    init(padding: CGFloat) {
+    init(padding: CGFloat, height: CGFloat) {
         self.padding = padding
+        self.height = height
         super.init(frame: .zero)
-        layer.cornerRadius = 25
+        layer.cornerRadius = height / 2
+        backgroundColor = .white
         
     }
     
@@ -28,7 +31,7 @@ class CustomTextfield: UITextField {
     }
     
     override var intrinsicContentSize: CGSize {
-        return .init(width: 0, height: 50)
+        return .init(width: 0, height: height)
     }
     
     required init?(coder: NSCoder) {

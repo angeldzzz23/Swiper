@@ -102,9 +102,8 @@ class RegistrationController: UIViewController {
     }
     
     let fullNameTextField: UITextField = {
-       let tf = CustomTextfield(padding: 16)
+        let tf = CustomTextfield(padding: 16, height: 50)
         tf.placeholder = "enter full name"
-        tf.backgroundColor = .white
 //        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
         let constraint = tf.heightAnchor.constraint(equalToConstant: 50)
         constraint.priority = UILayoutPriority(999)
@@ -128,9 +127,8 @@ class RegistrationController: UIViewController {
     }
     
     let emailTextField: UITextField = {
-        let tf = CustomTextfield(padding: 16)
+        let tf = CustomTextfield(padding: 16, height: 50)
         tf.placeholder = "Enter Email"
-        tf.backgroundColor = .white
 //        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
         let constraint = tf.heightAnchor.constraint(equalToConstant: 50)
         constraint.priority = UILayoutPriority(999)
@@ -142,10 +140,9 @@ class RegistrationController: UIViewController {
     }()
     
     let passwordTextField: UITextField = {
-        let tf = CustomTextfield(padding: 16)
+        let tf = CustomTextfield(padding: 16, height: 50)
         tf.placeholder = "Enter password"
         tf.isSecureTextEntry = true
-        tf.backgroundColor = .white
 //        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
         let constraint = tf.heightAnchor.constraint(equalToConstant: 50)
         constraint.priority = UILayoutPriority(999)
@@ -338,8 +335,26 @@ class RegistrationController: UIViewController {
     }
                                             
     
+    let goToLoginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Go to Login", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+        button.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    ///
+    @objc fileprivate func handleGoToLogin() {
+        let loginController = LoginController()
+//        loginController.view.backgroundColor = .
+        navigationController?.pushViewController(loginController, animated: true)
+    }
+    
     fileprivate func setupLayout() {
         // Do any additional setup after loading the view.
+        navigationController?.isNavigationBarHidden = true
         
         view.addSubview(pverallStackView)
     
@@ -356,6 +371,9 @@ class RegistrationController: UIViewController {
      
         pverallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         pverallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        view.addSubview(goToLoginButton)
+        goToLoginButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
     }
 }
 

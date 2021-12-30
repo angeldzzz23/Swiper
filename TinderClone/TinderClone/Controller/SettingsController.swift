@@ -10,10 +10,18 @@ import Firebase
 import JGProgressHUD
 import SDWebImage
 
-//extension SettingsController:
+
+protocol SettingsControllerDelegate {
+    func didSaveSettings() //
+}
+
+// extension SettingsController:
 
 class SettingsController: UITableViewController, UINavigationControllerDelegate {
 
+    /// the delegate
+    var delegate: SettingsControllerDelegate?
+    
     // instance properties for three buttons
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
@@ -297,8 +305,17 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
-            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleCancel))
+            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout)) //
         ]
+    }
+    
+    // deals with the log out of the user
+    @objc fileprivate func handleLogout() {
+        
+        try? Auth.auth().signOut() // logs out the user
+        dismiss(animated: true)
+        
+        
     }
     
     
@@ -333,6 +350,11 @@ class SettingsController: UITableViewController, UINavigationControllerDelegate 
                 return
             }
             print("Finished saving user info")
+            self.dismiss(animated: true) {
+                print("dimissal complete")
+                self.delegate?.didSaveSettings()
+//                homecontroller.fetchCurrentUser() // refresh the cards inside of homecontroller
+            }
         }
     
     }
