@@ -140,9 +140,11 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
     
     /// conforming CardView Delegate
-    /// thiss
-    func didTapMoreInfo() {
-        let userDetailsController = userDetailsController()
+    /// , protocola delagate method
+    func didTapMoreInfo(cardViewmode: CardViewModel) {
+        print("home controller:", cardViewmode.attributedString)
+        let userDetailsController = UserDetailsController()
+        userDetailsController.cardViewModel = cardViewmode
         userDetailsController.modalPresentationStyle = .fullScreen
         present(userDetailsController, animated: true)
     }

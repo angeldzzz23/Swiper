@@ -6,8 +6,22 @@
 //
 
 import UIKit
+import SDWebImage
 
-class userDetailsController: UIViewController, UIScrollViewDelegate {
+class UserDetailsController: UIViewController, UIScrollViewDelegate {
+    
+    /// I modified the attributed text
+    //  TODO: create a different viewModelobject for userDetails
+    var cardViewModel: CardViewModel! {
+        didSet {
+            infoLabel.attributedText = cardViewModel.attributedString
+            
+            guard let firstImageUrl = cardViewModel.imageUrls.first, let url = URL(string: firstImageUrl) else {return}
+            imageView.sd_setImage(with: url)
+
+            
+        }
+    }
     
     
     lazy var scrollView: UIScrollView = {
@@ -34,6 +48,15 @@ class userDetailsController: UIViewController, UIScrollViewDelegate {
     }()
     
     
+    let dimissButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "dismiss_down_arrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(handleTapDismiss), for: .touchUpInside)
+        return button
+        
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -53,8 +76,10 @@ class userDetailsController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(infoLabel)
         infoLabel.anchor(top: imageView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 15, bottom: 0, right: 16))
         
+        // adding the button
+        scrollView.addSubview(dimissButton)
+        dimissButton.anchor(top: imageView.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 0, bottom: 0, right: 24), size: .init(width: 50, height: 50))
         
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
     }
     
     
@@ -67,8 +92,7 @@ class userDetailsController: UIViewController, UIScrollViewDelegate {
         width = max(view.frame.width, width) // what does this to?
         imageView.frame = CGRect(x: min(0, -changeY), y: min(0, -changeY), width: width  , height: width)
         
-        
-        print(changeY)
+    
     }
     
     /// handles the tap dismiss method

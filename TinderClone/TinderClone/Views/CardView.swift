@@ -9,7 +9,7 @@ import UIKit
 import SDWebImage // it is useful for loadin g images
 
 protocol CardViewDelegate {
-    func didTapMoreInfo()
+    func didTapMoreInfo(cardViewmode: CardViewModel)
 }
 
 class CardView: UIView {
@@ -20,7 +20,7 @@ class CardView: UIView {
     var cardViewModel: CardViewModel! {
         didSet {
             
-            let imageName = cardViewModel.imageNames.first ?? ""
+            let imageName = cardViewModel.imageUrls.first ?? ""
             if let url = URL(string: imageName) {
                 imageView.sd_setImage(with: url)
             }
@@ -29,7 +29,7 @@ class CardView: UIView {
             InformationLabel.textAlignment = cardViewModel.textAlignment
             
             // setting the barstackview to be the approapritate color
-            (0..<cardViewModel.imageNames.count).forEach { (_) in
+            (0..<cardViewModel.imageUrls.count).forEach { (_) in
                 let barView = UIView()
                 barView.backgroundColor = barDeselectedColor
                 barsStackView.addArrangedSubview(barView)
@@ -112,7 +112,7 @@ class CardView: UIView {
     /// Presenting the user details pare
     @objc fileprivate func handleMoreInfo() {  // there is no presenrt here
         // delegation to present a Viewcontroller
-        delegate?.didTapMoreInfo() 
+        delegate?.didTapMoreInfo(cardViewmode: self.cardViewModel)
     }
     
     
