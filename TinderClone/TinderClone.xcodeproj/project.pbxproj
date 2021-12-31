@@ -26,6 +26,7 @@
 		1CD91F5D277C44D100D44F0C /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F5B277C44D100D44F0C /* LoginController.swift */; };
 		1CD91F5E277C44D100D44F0C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F5C277C44D100D44F0C /* LoginViewModel.swift */; };
 		1CD91F61277D8E9200D44F0C /* userDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F60277D8E9200D44F0C /* userDetailsController.swift */; };
+		1CD91F63277DB63F00D44F0C /* SwippingPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD91F62277DB63F00D44F0C /* SwippingPhotosController.swift */; };
 		1CE56A7A2772F26500A85806 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56A792772F26500A85806 /* RegistrationController.swift */; };
 		1CE56A7C277330DD00A85806 /* CustomTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56A7B277330DD00A85806 /* CustomTextfield.swift */; };
 		1CE56A7E2774228900A85806 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56A7D2774228900A85806 /* RegistrationViewModel.swift */; };
@@ -56,6 +57,7 @@
 		1CD91F5B277C44D100D44F0C /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		1CD91F5C277C44D100D44F0C /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		1CD91F60277D8E9200D44F0C /* userDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userDetailsController.swift; sourceTree = "<group>"; };
+		1CD91F62277DB63F00D44F0C /* SwippingPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwippingPhotosController.swift; sourceTree = "<group>"; };
 		1CE56A792772F26500A85806 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		1CE56A7B277330DD00A85806 /* CustomTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfield.swift; sourceTree = "<group>"; };
 		1CE56A7D2774228900A85806 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				1CD91F60277D8E9200D44F0C /* userDetailsController.swift */,
+				1CD91F62277DB63F00D44F0C /* SwippingPhotosController.swift */,
 			);
 			path = "User Details";
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				1CD40DD32771938B0059FB73 /* CardView.swift in Sources */,
 				1CAD86F127707330001B53EB /* HomeController.swift in Sources */,
 				1CAD86ED27707330001B53EB /* AppDelegate.swift in Sources */,
+				1CD91F63277DB63F00D44F0C /* SwippingPhotosController.swift in Sources */,
 				1CAD870527708CEE001B53EB /* HomeBottomControlsStackView.swift in Sources */,
 				1CD91F55277C132700D44F0C /* AgeRangeCell.swift in Sources */,
 				1CD40DDA2771CBC50059FB73 /* CardViewModel.swift in Sources */,

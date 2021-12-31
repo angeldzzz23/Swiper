@@ -100,7 +100,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         hud.textLabel.text = "Fetching users"
         hud.show(in: view)
         // pagination to page through 2 users at a time
-        let limit = 2 // the limit of users that you want paginate
+//        let limit = 2 // the limit of users that you want paginate
         // TODO: add pagination here
         let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
         

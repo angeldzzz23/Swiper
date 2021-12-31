@@ -24,6 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            FirebaseApp.configure()
             
             let window = UIWindow(windowScene: windowScene)
+//            let rootVC = SwippingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
             let rootVC = HomeController()
             window.rootViewController = rootVC
             self.window = window
