@@ -8,6 +8,7 @@
 import UIKit
 import SDWebImage // it is useful for loadin g images
 
+// TODO: add delegation for didlike and didDislike 
 protocol CardViewDelegate {
     func didTapMoreInfo(cardViewmode: CardViewModel)
     func didRemoveCard(cardView: CardView)
@@ -231,38 +232,65 @@ class CardView: UIView {
         
         let translation = gesture.translation(in: nil)
         let shouldDismissCard = translation.x > treshhold || translation.x < -treshhold
-    
-        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
+        let translationDirection: CGFloat = gesture.translation(in: nil).x > 0 ? 1 : -1
+
+
+        // TODO: user delegation to fix this
+        
+        
+        if shouldDismissCard {
+            // hack solution b/c you do not want to cast this
+            guard let homeController = self.delegate as? HomeController else {return}
             
-            if shouldDismissCard {
-                
-                if (translation.x > self.treshhold) {
-                    let offScreenTransform = self.transform.translatedBy(x: 1000, y: 0)
-                    self.transform = offScreenTransform
-                } else if (translation.x < -self.treshhold) {
-                    let offScreenTransform = self.transform.translatedBy(x: -1000, y: 0)
-                    self.transform = offScreenTransform
-                }
-                
+            if translationDirection == 1 {
+                homeController.handleLike()
             } else {
+                homeController.handleDislike()
+            }
+        } else {
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
                 self.transform = .identity
             }
-            
-           
-        } completion: { (_) in
-           
-            self.transform = .identity // brings it back to the origin
-            if shouldDismissCard {
-                self.removeFromSuperview()
-                
-                // reset the topCardView
-                self.delegate?.didRemoveCard(cardView: self)
-            }
-            
-         
-//            self.frame = CGRect(x: 0, y: 0, width: self.superview!.frame.width, height: self.superview!.frame.height)
-
         }
+        
+        
+      
+        
+        
+      
+        
+        
+//        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
+//
+//            if shouldDismissCard {
+//
+//                if (translation.x > self.treshhold) {
+//                    let offScreenTransform = self.transform.translatedBy(x: 1000, y: 0)
+//                    self.transform = offScreenTransform
+//                } else if (translation.x < -self.treshhold) {
+//                    let offScreenTransform = self.transform.translatedBy(x: -1000, y: 0)
+//                    self.transform = offScreenTransform
+//                }
+//
+//            } else {
+//                self.transform = .identity
+//            }
+//
+//
+//        } completion: { (_) in
+//
+//            self.transform = .identity // brings it back to the origin
+//            if shouldDismissCard {
+//                self.removeFromSuperview()
+//
+//                // reset the topCardView
+//                self.delegate?.didRemoveCard(cardView: self)
+//            }
+//
+//
+////            self.frame = CGRect(x: 0, y: 0, width: self.superview!.frame.width, height: self.superview!.frame.height)
+//
+//        }
     }
     
     

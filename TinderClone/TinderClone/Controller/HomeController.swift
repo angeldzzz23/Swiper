@@ -146,7 +146,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
              
              
              
-             
             // if everything was successful
             //query document sna is
             snapchot?.documents.forEach({ documentSnaphot in
@@ -177,15 +176,70 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     // here is a linked list
     
-    @objc fileprivate func handleLike() {
-       performSwipeAnimation(translation: 700, angle: 15)
+    /// deals with the like button being pressed
+    @objc  func handleLike() {
+        // save info to firestore
+        saveSwipeToFirestore(didLike: 1)
         
+       performSwipeAnimation(translation: 700, angle: 15)
     }
     
     /// deals for when the user presses the dislike button
     @objc func handleDislike() {
-       performSwipeAnimation(translation: -700, angle: -15)
+        saveSwipeToFirestore(didLike: 0)
+        performSwipeAnimation(translation: -700, angle: -15)
+        
     }
+    
+    fileprivate func saveSwipeToFirestore(didLike: Int) {
+        // get the current user id
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        guard let cardUID = topCardView?.cardViewModel.uid else {return}
+        
+        
+        // use the id that we are swiping for
+        let documentData = [cardUID: didLike]
+        
+        // check if it exists
+        Firestore.firestore().collection("swipes").document(uid).getDocument { snapShot, err in
+            if let err = err {
+                print("failed to fetch swipe doucment:", err)
+                return
+            }
+            // updating the snapshot
+            if snapShot?.exists == true {
+                Firestore.firestore().collection("swipes").document(uid).updateData(documentData) { err in
+                    if let err =  err {
+                        print("Failed to save swipe data", err)
+                        return
+                    }
+                    
+                    print("Successfully updaed swipes....")
+                }
+            } else {
+                Firestore.firestore().collection("swipes").document(uid).setData(documentData, merge: true) { error in
+                    if let error = error {
+                        print("Failed to save swipe data", error)
+                        return
+                    }
+
+                    print("Successfully saved swipe....")
+                }
+                
+            }
+            
+            
+        }
+    
+        
+        
+        
+        
+
+        
+    }
+    
+    
     
     
     

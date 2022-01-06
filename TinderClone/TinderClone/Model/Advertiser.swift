@@ -22,6 +22,6 @@ struct Advertiser: ProducesCardViewModel {
         
         
         
-        return CardViewModel(imageNames: [posterPhotoName], attributedString: attributedString, textAlignment: .center)
+        return CardViewModel(uid: "",imageNames: [posterPhotoName], attributedString: attributedString, textAlignment: .center)
     }
 }
