@@ -47,6 +47,7 @@ class CardView: UIView {
             
             // using a url for our image
             if let url = URL(string: imagURL ?? "")  {
+                
                 self?.imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "photo_placeholder"), options: .continueInBackground)
 
             }

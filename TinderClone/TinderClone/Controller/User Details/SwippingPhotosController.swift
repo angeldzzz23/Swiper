@@ -127,6 +127,7 @@ class PhotoController: UIViewController {
         view.addSubview(imageView)
         imageView.fillSuperview()
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {
