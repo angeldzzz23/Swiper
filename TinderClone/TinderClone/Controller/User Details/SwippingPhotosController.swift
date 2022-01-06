@@ -55,7 +55,7 @@ class SwippingPhotosController: UIPageViewController, UIPageViewControllerDataSo
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        // adding the extra padding to the top 
+        // adding the extra padding to the top
         let statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         let paddingTop = statusBarHeight + 8
         barStackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: paddingTop, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))

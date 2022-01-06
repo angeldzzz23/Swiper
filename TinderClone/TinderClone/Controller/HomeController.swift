@@ -25,7 +25,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     let topStackView = TopNavigationStackView()
     let cardDeckView = UIView()
     let buttonControlsStackView = HomeBottomControlsStackView()
-    
+    fileprivate let hud = JGProgressHUD(style: .dark)
+
     
     var cardViewModels = [CardViewModel]() // empty array
     
@@ -35,7 +36,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         // check if the user is logged out
         if Auth.auth().currentUser == nil {
             // kick the user out when they log out
-            let registrationController = LoginController()
+            let registrationController = RegistrationController()
             registrationController.delegate = self
             let navControler = UINavigationController(rootViewController: registrationController)
             navControler.modalPresentationStyle = .fullScreen
@@ -68,6 +69,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     /// gets the current user
     // TODO: Refactor this, so that we can use only one method =
     fileprivate func  fetchCurrentUser() {
+        
+        hud.textLabel.text = "Fetching users"
+        hud.show(in: view)
         guard let uid = Auth.auth().currentUser?.uid else {return}
         
         Firestore.firestore().collection("users").document(uid).getDocument { snapchot, err in
@@ -94,11 +98,18 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     /// gets the users from the firestore
     /// uses paginagination
     fileprivate func fetchUsersFromFirestore() {
-        guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else {return }
+//        guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else {
+//            self.hud.dismiss()
+//
+//            return
+//
+//        }
         
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = "Fetching users"
-        hud.show(in: view)
+        // this takes care of when a user doesnt have a minAge or maxAge 
+        let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
+        let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekignAge
+        
+   
         // pagination to page through 2 users at a time
 //        let limit = 2 // the limit of users that you want paginate
         // TODO: add pagination here
@@ -106,7 +117,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         
          query.getDocuments { snapchot, err in
-             hud.dismiss()
+             self.hud.dismiss()
             if let err  = err { // if there was an error
                 print("Failed to fetch users:", err)
                 return

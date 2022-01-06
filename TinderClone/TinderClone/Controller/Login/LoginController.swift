@@ -93,6 +93,7 @@ class LoginController: UIViewController {
     
     @objc fileprivate func handleBack() {
         navigationController?.popViewController(animated: true)
+    
     }
 
     override func viewDidLoad() {

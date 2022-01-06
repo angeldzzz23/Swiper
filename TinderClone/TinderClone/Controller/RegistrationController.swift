@@ -14,6 +14,9 @@ class RegistrationController: UIViewController {
     
     // MARK: UI components
     
+    var delegate: LoginControllerDelegate?
+
+    
     let selectPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Select Photo", for: .normal)
@@ -70,6 +73,8 @@ class RegistrationController: UIViewController {
     }()
     
     let registeringHUD = JGProgressHUD(style: .dark)
+    
+    
     // 4373
     @objc fileprivate func handleTapButton() {
         // dismisses the keyboard
@@ -82,6 +87,13 @@ class RegistrationController: UIViewController {
                 self?.showHUDWithError(error: err)
                 return
             }
+            
+            self?.dismiss(animated: true, completion: {
+                self?.delegate?.didFinishLoggingIn()
+                
+            })
+            
+            
         }
         
         print("Finishewd registering out user")
