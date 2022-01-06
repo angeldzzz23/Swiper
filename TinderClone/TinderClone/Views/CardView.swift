@@ -22,7 +22,8 @@ class CardView: UIView {
             
             let imageName = cardViewModel.imageUrls.first ?? ""
             if let url = URL(string: imageName) {
-                imageView.sd_setImage(with: url)
+//                imageView.sd_setImage(with: url)
+                imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "photo_placeholder"), options: .continueInBackground)
             }
            
             InformationLabel.attributedText = cardViewModel.attributedString
@@ -46,7 +47,8 @@ class CardView: UIView {
             
             // using a url for our image
             if let url = URL(string: imagURL ?? "")  {
-                self?.imageView.sd_setImage(with: url)
+                self?.imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "photo_placeholder"), options: .continueInBackground)
+
             }
                 
     
