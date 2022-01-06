@@ -130,6 +130,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         // TODO: add pagination here
         let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
         
+        topCardView = nil
         
          query.getDocuments { snapchot, err in
              self.hud.dismiss()
