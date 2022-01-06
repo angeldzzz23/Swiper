@@ -86,11 +86,11 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         hud.textLabel.text = "Fetching users"
         hud.show(in: view)
         guard let uid = Auth.auth().currentUser?.uid else {return}
-        
+        cardDeckView.subviews.forEach({$0.removeFromSuperview()})
         Firestore.firestore().collection("users").document(uid).getDocument { snapchot, err in
             //check if there is an error
             if let err = err {
-                print(err)
+                print("Failed to fetch user:",err)
                 return
             }
             
@@ -98,6 +98,25 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             guard let dictionary = snapchot?.data() else {return}
             self.user = User(dictionary: dictionary)
             print("current user:", self.user)
+            
+            self.fetchSwipes()
+//            self.fetchUsersFromFirestore()
+        }
+    }
+    
+    // blank dictionary
+    var swipes = [String: Int]()
+    
+    fileprivate func fetchSwipes() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("swipes").document(uid).getDocument { snapshot, err in
+            if let err = err {
+                print("Failed to fetch swipes info for currently logged in user", err)
+                return
+            }
+            print("Swipes:", snapshot?.data() ?? "")
+            guard let data = snapshot?.data() as? [String: Int] else {return}
+            self.swipes = data
             self.fetchUsersFromFirestore()
         }
     }
@@ -152,8 +171,10 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 // setting up the users
                 let userDictionary = documentSnaphot.data() // gets the user dictionaries
                 let user = User(dictionary: userDictionary) // creating a new user
+                let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
+                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
                 
-                if user.uid != Auth.auth().currentUser?.uid {
+                if isNotCurrentUser && hasNotSwipedBefore {
                     let cardView = self.setupCardFromUser(user: user)
                     previousCardView?.nextCardView = cardView
                     previousCardView = cardView
@@ -215,6 +236,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                     }
                     
                     print("Successfully updaed swipes....")
+                    self.checkIfMatchExists(cardUID: cardUID)
                 }
             } else {
                 Firestore.firestore().collection("swipes").document(uid).setData(documentData, merge: true) { error in
@@ -224,22 +246,38 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                     }
 
                     print("Successfully saved swipe....")
+                    self.checkIfMatchExists(cardUID: cardUID)
                 }
-                
             }
-            
-            
         }
-    
-        
-        
-        
-        
-
-        
+  
     }
     
-    
+    fileprivate func checkIfMatchExists(cardUID: String) {
+        // how to detect our match between two users?
+        print("Dectecting match")
+        
+        Firestore.firestore().collection("swipes").document(cardUID).getDocument { snapshot, err in
+            if let err = err {
+                print("failed to fetch document for card user:", err)
+                return
+            }
+            guard let data = snapshot?.data() else {return}
+            print(data)
+            
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            
+            let hasMatched = data[uid] as? Int == 1
+            
+            if hasMatched {
+                print("has matched")
+                let hud = JGProgressHUD(style: .dark)
+                hud.textLabel.text = "Found a match"
+                hud.show(in: self.view)
+                hud.dismiss(afterDelay: 4)
+            }
+        }
+    }
     
     
     
