@@ -57,6 +57,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         buttonControlsStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         
         buttonControlsStackView.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
+//        buttonControlsStackView.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
+        
+        
         
         
         setupLayout()
@@ -172,17 +175,32 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     // here is a linked list
     
     @objc fileprivate func handleLike() {
-       
+        let duration = 0.5
+        // using a CA basic animation
+        let translationAnimation = CABasicAnimation(keyPath: "position.x")
+        translationAnimation.toValue = 700
+        translationAnimation.duration = duration
+        translationAnimation.fillMode = .forwards
+        translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        translationAnimation.isRemovedOnCompletion = false
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.toValue = 15 * CGFloat.pi / 180
+        rotationAnimation.duration = duration
         
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseIn) {
-            self.topCardView?.frame = CGRect(x: 600, y: 0, width: self.topCardView!.frame.width, height: self.topCardView!.frame.height)
-            let angle = 15 * CGFloat.pi / 180
-            self.topCardView?.transform = CGAffineTransform(rotationAngle: angle)
-        } completion: { _ in
-            self.topCardView?.removeFromSuperview()
-            self.topCardView = self.topCardView?.nextCardView
+        
+        let cardView = topCardView
+        topCardView = cardView?.nextCardView
+        
+        CATransaction.setCompletionBlock {
+            cardView?.removeFromSuperview()
+            
         }
-
+        
+        cardView?.layer.add(translationAnimation, forKey: "translation")
+        cardView?.layer.add(rotationAnimation, forKey: "rotation")
+        
+        CATransaction.commit()
+        
     }
     
     // conforming to the delegate
