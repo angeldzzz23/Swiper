@@ -10,6 +10,8 @@ import Firebase
 import JGProgressHUD // importing progress hud
 
 class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate {
+    
+   
 
     
     
@@ -54,6 +56,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         buttonControlsStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         
+        buttonControlsStackView.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
+        
+        
         setupLayout()
         
         fetchCurrentUser()
@@ -63,6 +68,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
 //        fetchUsersFromFirestore() //
         
     }
+
+    
+  
     
     fileprivate var user: User?
     
@@ -88,6 +96,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             self.fetchUsersFromFirestore()
         }
     }
+    
+   
     
     @objc fileprivate func handleRefresh() {
         fetchUsersFromFirestore()
@@ -122,6 +132,15 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 print("Failed to fetch users:", err)
                 return
             }
+             
+             // we are going to set up the nextcardview realationship for all cards
+             
+             var previousCardView: CardView?
+             
+             
+             
+             
+             
             // if everything was successful
             //query document sna is
             snapchot?.documents.forEach({ documentSnaphot in
@@ -130,7 +149,13 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 let user = User(dictionary: userDictionary) // creating a new user
                 
                 if user.uid != Auth.auth().currentUser?.uid {
-                    self.setupCardFromUser(user: user)
+                    let cardView = self.setupCardFromUser(user: user)
+                    previousCardView?.nextCardView = cardView
+                    previousCardView = cardView
+                    //
+                    if self.topCardView == nil {
+                        self.topCardView = cardView
+                    }
                 }
                 
 //                self.cardViewModels.append(user.toCardViewModel()) // setting up our cards
@@ -141,13 +166,40 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         }
     }
     
-    fileprivate func setupCardFromUser(user: User) {
+    
+    var topCardView: CardView?
+    
+    // here is a linked list
+    
+    @objc fileprivate func handleLike() {
+       
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseIn) {
+            self.topCardView?.frame = CGRect(x: 600, y: 0, width: self.topCardView!.frame.width, height: self.topCardView!.frame.height)
+            let angle = 15 * CGFloat.pi / 180
+            self.topCardView?.transform = CGAffineTransform(rotationAngle: angle)
+        } completion: { _ in
+            self.topCardView?.removeFromSuperview()
+            self.topCardView = self.topCardView?.nextCardView
+        }
+
+    }
+    
+    // conforming to the delegate
+    func didRemoveCard(cardView: CardView) {
+        self.topCardView?.removeFromSuperview()
+        self.topCardView = self.topCardView?.nextCardView
+    }
+    
+    
+    fileprivate func setupCardFromUser(user: User) -> CardView {
         let cardView = CardView(frame: .zero) // this is just a rect with 0, 0, doesnt matter since we are using autolayout
         cardView.delegate = self
         cardView.cardViewModel = user.toCardViewModel()
         cardDeckView.addSubview(cardView)
         cardDeckView.sendSubviewToBack(cardView) // what does this do?
         cardView.fillSuperview()
+        return cardView
     }
     
     /// conforming CardView Delegate
