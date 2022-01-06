@@ -57,7 +57,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         buttonControlsStackView.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         
         buttonControlsStackView.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
-//        buttonControlsStackView.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
+        buttonControlsStackView.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         
         
         
@@ -72,6 +72,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
     }
 
+    
+   
     
   
     
@@ -175,16 +177,28 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     // here is a linked list
     
     @objc fileprivate func handleLike() {
+       performSwipeAnimation(translation: 700, angle: 15)
+        
+    }
+    
+    /// deals for when the user presses the dislike button
+    @objc func handleDislike() {
+       performSwipeAnimation(translation: -700, angle: -15)
+    }
+    
+    
+    
+    fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
         let duration = 0.5
         // using a CA basic animation
         let translationAnimation = CABasicAnimation(keyPath: "position.x")
-        translationAnimation.toValue = 700
+        translationAnimation.toValue = translation
         translationAnimation.duration = duration
         translationAnimation.fillMode = .forwards
         translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         translationAnimation.isRemovedOnCompletion = false
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotationAnimation.toValue = 15 * CGFloat.pi / 180
+        rotationAnimation.toValue = angle * CGFloat.pi / 180
         rotationAnimation.duration = duration
         
         
@@ -200,8 +214,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         cardView?.layer.add(rotationAnimation, forKey: "rotation")
         
         CATransaction.commit()
-        
     }
+    
     
     // conforming to the delegate
     func didRemoveCard(cardView: CardView) {
