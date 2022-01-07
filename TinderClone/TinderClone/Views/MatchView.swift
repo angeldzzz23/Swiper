@@ -9,6 +9,22 @@ import UIKit
 
 class MatchView: UIView {
     
+    fileprivate let isAMatchImageView: UIImageView = {
+       let iv = UIImageView(image: UIImage(named: "itsamatch"))
+        iv.contentMode = .scaleAspectFill
+        return iv
+    }()
+    
+    /// the label that contains the description of the user
+    fileprivate let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "You and X have liked\neach other"
+        label.textAlignment = .center
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.numberOfLines = 0
+        return label
+    }()
     
     /// the imageview of the user
     fileprivate let currentUserImageView: UIImageView = {
@@ -38,12 +54,26 @@ class MatchView: UIView {
     }
     
     /// sets up the contraints of each view
+    /// the following constraints are added:
+    /// isAMatchImageView,
+    /// descriptionLabel - the description,
+    /// currentUserImageView,
+    /// cardUserImageView - the user you have made the match with,
     fileprivate func setUpLayout() {
+        
+        addSubview(isAMatchImageView)
+        addSubview(descriptionLabel)
         addSubview(currentUserImageView)
         addSubview(cardUserImageView)
         
-        let imageWith: CGFloat = 140
+        let imageWith: CGFloat = 140 // the width of the image
         
+        // constraints for the itsAMatchImageView
+        isAMatchImageView.anchor(top: nil, leading: nil, bottom: descriptionLabel.topAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 16, right: 0), size: .init(width: 300, height: 80))
+        isAMatchImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        
+        // costraints for the description label
+        descriptionLabel.anchor(top: nil, leading: self.leadingAnchor, bottom: currentUserImageView.topAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 32, right: 0), size: .init(width: 0, height: 50))
         
         // constraints the trailing anchor to the centerx anchor
         currentUserImageView.anchor(top: nil, leading: nil, bottom: nil, trailing: centerXAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 16), size: .init(width: imageWith, height: imageWith))
