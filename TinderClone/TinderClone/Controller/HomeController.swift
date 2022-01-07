@@ -218,9 +218,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         guard let cardUID = topCardView?.cardViewModel.uid else {return}
         
         
-        if didLike == 1 {
-            checkIfMatchExists(cardUID: cardUID)
-        }
+   
         
         // use the id that we are swiping for
         let documentData = [cardUID: didLike]
@@ -240,6 +238,10 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                     }
                     
                     print("Successfully updaed swipes....")
+                    // this takes a bit of time so that is why they are added here
+                    if didLike == 1 {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
                 }
             } else {
                 Firestore.firestore().collection("swipes").document(uid).setData(documentData, merge: true) { error in
@@ -249,6 +251,10 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                     }
 
                     print("Successfully saved swipe....")
+                    // this takes a bit of time so that is why they are added here
+                    if didLike == 1 {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
                 }
             }
         }

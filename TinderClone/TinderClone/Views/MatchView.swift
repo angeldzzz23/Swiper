@@ -8,12 +8,54 @@
 import UIKit
 
 class MatchView: UIView {
+    
+    
+    /// the imageview of the user
+    fileprivate let currentUserImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "jane2"))
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.white.cgColor
+        return imageView
+    }()
+    
+    fileprivate let cardUserImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "kelly2"))
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.white.cgColor
+        return imageView
+    }()
+
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupBlurView()
+        setUpLayout()
+    }
+    
+    /// sets up the contraints of each view
+    fileprivate func setUpLayout() {
+        addSubview(currentUserImageView)
+        addSubview(cardUserImageView)
         
+        let imageWith: CGFloat = 140
+        
+        
+        // constraints the trailing anchor to the centerx anchor
+        currentUserImageView.anchor(top: nil, leading: nil, bottom: nil, trailing: centerXAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 16), size: .init(width: imageWith, height: imageWith))
+        currentUserImageView.layer.cornerRadius = imageWith/2
+        currentUserImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        // constraints leading anchor to the middle
+        // adds some padding
+        cardUserImageView.anchor(top: nil, leading: centerXAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 16, bottom: 0, right: 0), size: .init(width: imageWith, height: imageWith))
+        cardUserImageView.layer.cornerRadius = imageWith/2
+        // centers it to the middle
+        cardUserImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
     
     // the visual effect view
@@ -42,7 +84,7 @@ class MatchView: UIView {
     @objc fileprivate func handleTapDimiss() {
  
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut) {
-            self.visualEffectView.alpha = 0
+            self.alpha = 0
         } completion: { _ in
             // we remove the view from the superview
             self.removeFromSuperview()
