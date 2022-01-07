@@ -44,8 +44,25 @@ class MatchView: UIView {
         imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
     }()
+    
+    
+    
+    fileprivate let sendMessageButton: UIButton = {
+        let button = SendMessageButton(type: .system)
+        button.setTitle("SEND MESSAGE", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        return button
+    }()
 
-
+    
+    
+    fileprivate let keepSwipingButton: UIButton = {
+        let button = KeepSwipingButton(type: .system)
+        button.setTitle("SEND MESSAGE", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -65,6 +82,8 @@ class MatchView: UIView {
         addSubview(descriptionLabel)
         addSubview(currentUserImageView)
         addSubview(cardUserImageView)
+        addSubview(sendMessageButton)
+        addSubview(keepSwipingButton)
         
         let imageWith: CGFloat = 140 // the width of the image
         
@@ -86,6 +105,12 @@ class MatchView: UIView {
         cardUserImageView.layer.cornerRadius = imageWith/2
         // centers it to the middle
         cardUserImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+     // constraints for the sendMessageButton
+        sendMessageButton.anchor(top: currentUserImageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 32, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: 60))
+        
+        keepSwipingButton.anchor(top: sendMessageButton.bottomAnchor, leading: sendMessageButton.leadingAnchor, bottom: nil, trailing: sendMessageButton.trailingAnchor, padding: .init(top: 16, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 60))
+        
     }
     
     // the visual effect view

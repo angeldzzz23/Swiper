@@ -33,6 +33,8 @@
 		1CE56AA02774413800A85806 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1CE56A9F2774413800A85806 /* GoogleService-Info.plist */; };
 		1CE56AA22774691E00A85806 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE56AA12774691E00A85806 /* Bindable.swift */; };
 		1CE821522788CD0A0058574C /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE821512788CD0A0058574C /* MatchView.swift */; };
+		1CE821542788DB610058574C /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE821532788DB610058574C /* SendMessageButton.swift */; };
+		1CE821562788E0B40058574C /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE821552788E0B40058574C /* KeepSwipingButton.swift */; };
 		DD36C45414D3CB4BB1E577E3 /* Pods_TinderClone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B7AFB410816C7447F6E00E2 /* Pods_TinderClone.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +67,8 @@
 		1CE56A9F2774413800A85806 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1CE56AA12774691E00A85806 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		1CE821512788CD0A0058574C /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
+		1CE821532788DB610058574C /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
+		1CE821552788E0B40058574C /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		3FCE06CAB91E34C4F012AAF6 /* Pods-TinderClone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderClone.debug.xcconfig"; path = "Target Support Files/Pods-TinderClone/Pods-TinderClone.debug.xcconfig"; sourceTree = "<group>"; };
 		64B595DE5978E6671F1AED0C /* Pods-TinderClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderClone.release.xcconfig"; path = "Target Support Files/Pods-TinderClone/Pods-TinderClone.release.xcconfig"; sourceTree = "<group>"; };
 		9B7AFB410816C7447F6E00E2 /* Pods_TinderClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinderClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,6 +149,8 @@
 				1CD91F242776129200D44F0C /* SettingsCell.swift */,
 				1CD91F54277C132700D44F0C /* AgeRangeCell.swift */,
 				1CE821512788CD0A0058574C /* MatchView.swift */,
+				1CE821532788DB610058574C /* SendMessageButton.swift */,
+				1CE821552788E0B40058574C /* KeepSwipingButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -337,11 +343,13 @@
 				1CD40DD62771B37C0059FB73 /* User.swift in Sources */,
 				1CE56AA22774691E00A85806 /* Bindable.swift in Sources */,
 				1CE56A7C277330DD00A85806 /* CustomTextfield.swift in Sources */,
+				1CE821542788DB610058574C /* SendMessageButton.swift in Sources */,
 				1CE56A7E2774228900A85806 /* RegistrationViewModel.swift in Sources */,
 				1CD91F5D277C44D100D44F0C /* LoginController.swift in Sources */,
 				1CAD8707277092EB001B53EB /* TopNavigationStackView.swift in Sources */,
 				1CAD87022770801E001B53EB /* Extensions+UIView.swift in Sources */,
 				1CD91F252776129200D44F0C /* SettingsCell.swift in Sources */,
+				1CE821562788E0B40058574C /* KeepSwipingButton.swift in Sources */,
 				1CD91F5E277C44D100D44F0C /* LoginViewModel.swift in Sources */,
 				1CAD86EF27707330001B53EB /* SceneDelegate.swift in Sources */,
 				1CD91F61277D8E9200D44F0C /* userDetailsController.swift in Sources */,
