@@ -6,8 +6,59 @@
 //
 
 import UIKit
+import Firebase
 
 class MatchView: UIView {
+    
+    var currentUser: User! {
+        didSet {
+           
+            
+        }
+    }
+    
+    
+    var cardUID: String! {
+        
+        didSet {
+            // either fetch current user or pass in our current user if we have it 
+            
+            // fetch the cardUID information
+            let query =  Firestore.firestore().collection("users")
+            
+             query.document(cardUID).getDocument { snapshot, err in
+                if let err = err {
+                    print("Failed to fetch card user:", err)
+                    return
+                }
+                
+                // getting the data as a dictionary
+                guard let dictionary = snapshot?.data() else {return}
+                let user = User(dictionary: dictionary)
+                 
+                guard let url = URL(string: user.imageUrl1 ?? "") else {return}
+                self.cardUserImageView.sd_setImage(with: url)
+                 
+                 guard let currentUserImageUrl = URL(string: self.currentUser.imageUrl1 ?? "") else {return }
+                 
+                 // gets rid of the flashing
+                 self.currentUserImageView.sd_setImage(with: currentUserImageUrl) { _, _, _, _ in
+                     self.setUpAnimations()
+                 }
+                
+                 // set up the description label text here
+                 
+                 
+                
+                
+                
+            }
+            
+            
+        }
+    }
+    
+    
     
     fileprivate let isAMatchImageView: UIImageView = {
        let iv = UIImageView(image: UIImage(named: "itsamatch"))
@@ -42,6 +93,7 @@ class MatchView: UIView {
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.alpha = 0
         return imageView
     }()
     
@@ -68,10 +120,12 @@ class MatchView: UIView {
         
         setupBlurView()
         setUpLayout()
-        setUpAnimations()
+        
     }
     
     fileprivate func setUpAnimations() {
+        
+        views.forEach({$0.alpha = 1})
         // starting positions
         let angle = 30 * CGFloat.pi/180 // -30 in radians
         
@@ -79,6 +133,10 @@ class MatchView: UIView {
       
         cardUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating( CGAffineTransform(translationX: -200, y: 0))
 
+        // buttons start off completely off screen
+        sendMessageButton.transform = CGAffineTransform(translationX: -500, y: 0)
+        keepSwipingButton.transform = CGAffineTransform(translationX: 500, y: 0)
+        
         // keyframe animations for segmented animations
         UIView.animateKeyframes(withDuration: 1.2, delay: 0, options: .calculationModeCubic) {
         
@@ -93,25 +151,28 @@ class MatchView: UIView {
             UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
                 self.currentUserImageView.transform = .identity
                 self.cardUserImageView.transform = .identity
-                
             }
             
             
         } completion: { _ in
             
         }
+        
+        // added the animation for the buttons
+        UIView.animate(withDuration: 0.75, delay: 0.65 * 1.3, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseOut) {
+            self.sendMessageButton.transform = .identity
+            self.keepSwipingButton.transform = .identity
+        } completion: { _ in
+            
+        }
 
-        
-        
-//        UIView.animate(withDuration: 0.7) {
-//            self.currentUserImageView.transform = .identity
-//            self.cardUserImageView.transform = .identity
-//        } completion: { _ in
-//
-//        }
+    
 
     }
     
+    
+    
+    lazy var views = [isAMatchImageView,descriptionLabel, currentUserImageView, cardUserImageView, sendMessageButton, keepSwipingButton]
     
     
     /// sets up the contraints of each view
@@ -121,13 +182,11 @@ class MatchView: UIView {
     /// currentUserImageView,
     /// cardUserImageView - the user you have made the match with,
     fileprivate func setUpLayout() {
-        
-        addSubview(isAMatchImageView)
-        addSubview(descriptionLabel)
-        addSubview(currentUserImageView)
-        addSubview(cardUserImageView)
-        addSubview(sendMessageButton)
-        addSubview(keepSwipingButton)
+        views.forEach { v in
+            addSubview(v)
+            v.alpha = 0
+        }
+  
         
         let imageWith: CGFloat = 140 // the width of the image
         

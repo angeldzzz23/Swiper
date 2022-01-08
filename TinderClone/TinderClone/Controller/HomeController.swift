@@ -288,6 +288,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     /// presents a view whenvever there is a match
     fileprivate func presentMatchView(cardUID: String) {
         let matchView = MatchView()
+        matchView.cardUID  = cardUID
+        matchView.currentUser = self.user
         view.addSubview(matchView)
         matchView.fillSuperview()
     }
