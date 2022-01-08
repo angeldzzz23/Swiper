@@ -68,7 +68,51 @@ class MatchView: UIView {
         
         setupBlurView()
         setUpLayout()
+        setUpAnimations()
     }
+    
+    fileprivate func setUpAnimations() {
+        // starting positions
+        let angle = 30 * CGFloat.pi/180 // -30 in radians
+        
+        currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle).concatenating(  CGAffineTransform(translationX: 200, y: 0))
+      
+        cardUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating( CGAffineTransform(translationX: -200, y: 0))
+
+        // keyframe animations for segmented animations
+        UIView.animateKeyframes(withDuration: 1.2, delay: 0, options: .calculationModeCubic) {
+        
+            // animation 1 - transaltion back to original position
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.45) {
+                self.currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle)
+                self.cardUserImageView.transform = CGAffineTransform(rotationAngle: angle)
+            }
+            
+            // animation 2 - rotation
+            //
+            UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
+                self.currentUserImageView.transform = .identity
+                self.cardUserImageView.transform = .identity
+                
+            }
+            
+            
+        } completion: { _ in
+            
+        }
+
+        
+        
+//        UIView.animate(withDuration: 0.7) {
+//            self.currentUserImageView.transform = .identity
+//            self.cardUserImageView.transform = .identity
+//        } completion: { _ in
+//
+//        }
+
+    }
+    
+    
     
     /// sets up the contraints of each view
     /// the following constraints are added:
