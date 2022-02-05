@@ -1,28 +1,22 @@
 # Tinder
 
 Matches users who have swiped right on each other using firebase. 
-
-
-
-<img src="image.png" border=1 style="border-color:#eeeeee" width="300" height="auto">
-
-
  
 **Preview**
 
 <table>
 <tr>
 <td width="25%">
-<center>Solid</center>
+<center>Creating an account</center>
 </td>
 <td width="25%">
-<center>Gradient</center>
+<center>Matching Newsfeed</center>
 </td>
 <td width="25%">
-<center>Solid Animated</center>
+<center>Settings</center>
 </td>
 <td width="25%">
-<center>Gradient Animated</center>
+<center>Matching Notification</center>
 </td>
 </tr>
 <tr>
@@ -36,7 +30,12 @@ Matches users who have swiped right on each other using firebase.
 <img src="MatchingFeed.png"></img>
 </td>
 <td width="25%">
-<img src="Login.png"></img>
+<img src="MatchingNotification.png"></img>
 </td>
 </tr>
 </table>
+
+**Additions**
+There are still some bugs that I havent figured out. For some reason when I create an account, it doesnt log in. 
+
+
