@@ -35,7 +35,16 @@ Matches users who have swiped right on each other using firebase.
 </tr>
 </table>
 
+## 🌟 Features
+
+- [x] Creating an account
+- [x] Loggin in 
+- [x] Swipping on users 
+- [x] editting profile
+
+
 **Additions**
-There are still some bugs that I havent figured out. For some reason when I create an account, it doesnt log in. 
+There are still some bugs that I havent figured out. For some reason when I create an account, it doesnt log in.
+
 
 
