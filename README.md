@@ -1,6 +1,6 @@
 # Swipper
-
-Matches users who have swiped right on each other using firebase.  
+It is a not so unique app that matches users using firebase.  
+**Objectives**
  
 **Preview**
 
