@@ -10,10 +10,10 @@ Matches users who have swiped right on each other using firebase.
 <center>Creating an account</center>
 </td>
 <td width="25%">
-<center>Matching Newsfeed</center>
+<center>Settings</center>
 </td>
 <td width="25%">
-<center>Settings</center>
+<center>Matching Newsfeed</center>
 </td>
 <td width="25%">
 <center>Matching Notification</center>
