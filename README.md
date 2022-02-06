@@ -1,6 +1,6 @@
-# Tinder
+# Swipper
 
-Matches users who have swiped right on each other using firebase. 
+Matches users who have swiped right on each other using firebase.  
  
 **Preview**
 
@@ -38,13 +38,15 @@ Matches users who have swiped right on each other using firebase.
 ## 🌟 Features
 
 - [x] Creating an account
-- [x] Loggin in 
+- [x] Logging in 
 - [x] Swipping on users 
-- [x] editting profile
+- [x] editing profile
 
 
-**Additions**
-There are still some bugs that I havent figured out. For some reason when I create an account, it doesnt log in.
+**Addition/bugss**
+There are still a couple features I would liek to fix.
+1. There's a bug when creating an account, for some reason, sometimes it doesnt show swippable users. A quick workaround is changeing the scene delegate to HomeController and logging in that way. 
+
 
 
 
