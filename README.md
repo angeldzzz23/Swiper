@@ -1,6 +1,5 @@
 # Swiper
-It is a not so unique app that matches users using firebase.  
-**Objectives**
+It is a not so unique matching app that matches users using firebase.  
  
 **Preview**
 
@@ -44,8 +43,8 @@ It is a not so unique app that matches users using firebase.
 
 
 **Addition/bugss**
-There are still a couple features I would liek to fix.
-1. There's a bug when creating an account, for some reason, sometimes it doesnt show swippable users. A quick workaround is changeing the scene delegate to HomeController and logging in that way. 
+There are still a couple features I would like to fix.
+1. There's a bug when creating an account, for some reason, sometimes it doesnt show swippable users. A quick workaround is changing the scene delegate to HomeController and logging in that way. 
 
 
 
