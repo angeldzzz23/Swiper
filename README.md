@@ -1,4 +1,4 @@
-# Swipper
+# Swiper
 It is a not so unique app that matches users using firebase.  
 **Objectives**
  
